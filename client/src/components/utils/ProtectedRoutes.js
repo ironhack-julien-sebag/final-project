@@ -6,6 +6,8 @@ import { AuthContext } from "../../context/auth"
 function ProtectedRoute({ children, redirectTo }) {
     const { isLoggedIn } = useContext(AuthContext)
 
+    console.log(`Logged: ${isLoggedIn}`)
+
     return isLoggedIn ? children : <Navigate to={redirectTo} />
 }
 
