@@ -1,18 +1,15 @@
 // Packages
-import React from "react"
+import React, { useContext } from "react"
 import { NavLink as Link } from "react-router-dom"
 import styled from "styled-components"
-import { v4 as uuid } from "uuid"
 
 // Components
 import Logo from "../ui/LogoLink"
 import * as Variables from "../styles/Variables"
+import { AuthContext } from "../../context/auth"
 
 // Switch color modes
 import ToggleTheme from "../utils/ToggleTheme"
-
-// Data
-import NavItems from "../data/NavItems"
 
 // Styles
 const Container = styled.header`
@@ -32,55 +29,66 @@ const Nav = styled.nav`
     display: flex;
     align-items: center;
     justify-content: flex-start;
+`
 
-    a {
-        color: ${Variables.Colors.White};
-        font-weight: ${Variables.FontWeights.Regular};
-        text-decoration: none;
-        position: relative;
+const LinkStyled = styled(Link)`
+    color: ${Variables.Colors.White};
+    font-weight: ${Variables.FontWeights.Regular};
+    text-decoration: none;
+    position: relative;
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: ${Variables.FontSizes.Body};
 
-        &.active {
-            font-weight: ${Variables.FontWeights.Bold};
-        }
+    &.active {
+        font-weight: ${Variables.FontWeights.Bold};
+    }
 
-        &:after {
-            content: "";
-            position: absolute;
-            bottom: -2px;
-            width: 0;
-            background-color: currentColor;
-            height: 2px;
-            left: 50%;
-            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
+    &:after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        width: 0;
+        background-color: currentColor;
+        height: 2px;
+        left: 50%;
+        transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
 
-        &:hover:after {
-            width: 100%;
-            left: 0;
-        }
+    &:hover:after {
+        width: 100%;
+        left: 0;
+    }
 
-        &:not(:last-child) {
-            margin-right: ${Variables.Margins.M};
-        }
+    &:not(:last-child) {
+        margin-right: ${Variables.Margins.M};
     }
 `
 
 function Header(props) {
+    const { isLoggedIn, logoutUser } = useContext(AuthContext)
+
     return (
         <Container>
             <Logo />
 
             <Nav>
-                {NavItems.map(item => (
-                    <Link to={item.path} key={uuid()}>
-                        {item.text}
-                    </Link>
-                ))}
+                <LinkStyled to="/artists">Artists</LinkStyled>
 
-                <ToggleTheme theme={props.theme} toggleTheme={props.toggleTheme} />
+                {isLoggedIn ? (
+                    <>
+                        <LinkStyled to="/my-account">My account</LinkStyled>
+                        <LinkStyled as="button" onClick={logoutUser}>Log out</LinkStyled>
+                    </>
+                ) : (
+                    <LinkStyled to="/login">Log in</LinkStyled>
+                )}
 
-                {/* Login btn */}
-                {/* Search here */}
+                <ToggleTheme
+                    theme={props.theme}
+                    toggleTheme={props.toggleTheme}
+                />
             </Nav>
         </Container>
     )

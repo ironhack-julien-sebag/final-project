@@ -51,7 +51,7 @@ function EditAccount() {
                         <Input
                             label="Your email"
                             name="email"
-                            id="email"
+                            id="emailEdit"
                             type="email"
                             value="a@b.com"
                             disabled

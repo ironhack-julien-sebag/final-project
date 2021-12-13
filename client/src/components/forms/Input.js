@@ -66,6 +66,8 @@ function Input(props) {
                 name={props.name}
                 type={props.type || "text"}
                 placeholder={props.placeholder}
+                value={props.value}
+                onChange={props.onChange}
                 {...props}
             />
         </Container>

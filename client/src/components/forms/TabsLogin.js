@@ -1,7 +1,8 @@
 // Packages
 import React, { useState } from "react"
 import styled from "styled-components"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import axios from "axios"
 
 // Components
 import * as Variables from "../styles/Variables"
@@ -32,6 +33,14 @@ function TabsLogin() {
     const createOpen = isCreateOpen ? "open" : ""
     const spanCreate = isCreateOpen ? "create" : ""
 
+    // Signup form
+    const [email, setEmail] = useState("")
+    const [name, setName] = useState("")
+    const [password, setPassword] = useState("")
+    const [errorMessage, setErrorMessage] = useState(undefined)
+
+    const navigate = useNavigate()
+
     return (
         <TabContainer>
             <TabList col={2}>
@@ -59,9 +68,9 @@ function TabsLogin() {
             <TabContent>
                 <Tab className={loginOpen}>
                     <Form action="" method="POST" btnPrimary="Log in">
-                        <Input label="Email" name="email" id="email" />
+                        <Input label="Email" name="email" id="emailLogin" />
 
-                        <Password label="Password" />
+                        <Password label="Password" id="passwordLogin" />
                     </Form>
 
                     <LinkForgot>
@@ -89,14 +98,14 @@ function TabsLogin() {
 
                         <Input
                             label="Email"
-                            id="email"
+                            id="emailCreate"
                             name="email"
                             type="email"
                         />
 
                         <Input label="Address" id="address" name="address" />
 
-                        <Password label="Password" />
+                        <Password label="Password" id="passwordCreate" />
                     </Form>
                 </Tab>
             </TabContent>

@@ -5,13 +5,16 @@ import { BrowserRouter as Router } from "react-router-dom"
 
 // Components
 import App from "./App"
+import { AuthProviderWrapper } from "./context/auth"
 
 // Base styles
 import "./styles/style.css"
 
 ReactDOM.render(
     <Router>
-        <App />
+        <AuthProviderWrapper>
+            <App />
+        </AuthProviderWrapper>
     </Router>,
     document.getElementById("root")
 )

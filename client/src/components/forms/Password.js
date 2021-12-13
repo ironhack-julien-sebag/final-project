@@ -66,7 +66,14 @@ function Password(props) {
             </Font.Label>
 
             <InputContainer>
-                <Input type={isText} id="password" name="password" />
+                <Input
+                    type={isText}
+                    id={props.id}
+                    name="password"
+                    value={props.value}
+                    onChange={props.onChange}
+                    {...props}
+                />
 
                 <Button type="button" aria-label="Show / hide password">
                     <Icon

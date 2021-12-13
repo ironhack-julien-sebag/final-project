@@ -49,9 +49,7 @@ function Footer(props) {
                     {SiteData.Cities.map(item => (
                         <li key={uuid()}>
                             <Font.P>
-                                <Link to="#">
-                                    Book a band in {item}
-                                </Link>
+                                <Link to="#">Book a band in {item}</Link>
                             </Font.P>
                         </li>
                     ))}
@@ -86,8 +84,18 @@ function Footer(props) {
             <Col>
                 {/* Contact form */}
                 <Form action="" method="POST" btnPrimary="Send" id="contact">
-                    <Input label="Your name" name="name" id="name" footer />
-                    <Input label="Your email" name="email" id="email" footer />
+                    <Input
+                        label="Your name"
+                        name="name"
+                        id="nameContactFooter"
+                        footer
+                    />
+                    <Input
+                        label="Your email"
+                        name="email"
+                        id="emailContactFooter"
+                        footer
+                    />
                     <Input
                         label="Title of your message"
                         name="title"

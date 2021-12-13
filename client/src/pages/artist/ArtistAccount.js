@@ -14,7 +14,7 @@ import artists from "../../components/data/artists.json"
 
 const Rone = artists[0]
 
-console.log(Rone)
+// console.log(Rone)
 
 function ArtistAccount() {
     return (

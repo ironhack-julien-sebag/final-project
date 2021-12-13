@@ -21,7 +21,7 @@ function ForgotPassword() {
                     <Font.P>Please enter your email to reset your password</Font.P>
 
                     <Form action="" method="POST" btnPrimary="Reset your password">
-                        <Input label="Your email" name="email" id="email" />
+                        <Input label="Your email" name="email" id="emailReset" />
                     </Form>
                 </Content>
             </Container>

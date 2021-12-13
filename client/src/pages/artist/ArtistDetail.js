@@ -77,7 +77,7 @@ function ArtistDetail(props) {
                         <Input
                             type="hidden"
                             name="email"
-                            id="email"
+                            id="emailArtist"
                             value="userEmail"
                             hidden
                         />

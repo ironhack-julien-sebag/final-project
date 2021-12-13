@@ -30,7 +30,7 @@ const ButtonsContainer = styled.div`
 
 function Form(props) {
     return (
-        <Container action={props.action} method={props.method} as={props.container && "div"}>
+        <Container as={props.container && "div"} onSubmit={props.onSubmit}>
             {props.children}
 
             {props.btnPrimary && (
