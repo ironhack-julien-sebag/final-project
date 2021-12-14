@@ -4,7 +4,10 @@ mongoose.connect(process.env.MONGODB_URI)
 const User = require("../models/User.model")
 
 // Test Salt password
-
+const bcrypt = require("bcryptjs")
+const password = "Password42"
+const salt = bcrypt.genSaltSync()
+const hash = bcrypt.hashSync(password, salt)
 
 let fakeArtists = []
 
@@ -178,7 +181,7 @@ for (let i = 0; i < artists.length; i++) {
     fakeArtists.push({
         fullName: artists[i],
         email: convertToEmail(artists[i]),
-        password: "Password42",
+        password: hash,
         role: "artist",
         city: getRandom(cities),
         imageUrl: pictures[i],
@@ -210,7 +213,7 @@ const realArtists = [
     {
         fullName: "Rone",
         email: "rone@email.com",
-        password: "Password42",
+        password: hash,
         city: getRandom(cities),
         role: "artist",
         imageUrl:
@@ -247,7 +250,7 @@ const realArtists = [
     {
         fullName: "Justice",
         email: "justice@email.com",
-        password: "Password42",
+        password: hash,
         city: getRandom(cities),
         role: "artist",
         imageUrl:
@@ -283,7 +286,7 @@ const realArtists = [
     {
         fullName: "Rolling Stones",
         email: "rolling-stones@email.com",
-        password: "Password42",
+        password: hash,
         city: getRandom(cities),
         role: "artist",
         imageUrl:
@@ -314,7 +317,7 @@ const realArtists = [
     {
         fullName: "Polo and Pan",
         email: "polo-and-pan@email.com",
-        password: "Password42",
+        password: hash,
         city: getRandom(cities),
         role: "artist",
         imageUrl:
