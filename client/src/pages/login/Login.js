@@ -2,8 +2,7 @@
 import React, { useContext, useState } from "react"
 import axios from "axios"
 import { AuthContext } from "../../context/auth"
-// import styled from "styled-components"
-import { useNavigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -21,9 +20,7 @@ function Login(props) {
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState(undefined)
 
-    const { logInUser } = useContext(AuthContext)
-
-    const navigate = useNavigate()
+    const { logInUser, isLoggedIn } = useContext(AuthContext)
 
     const handleEmail = e => setEmail(e.target.value)
     const handlePassword = e => setPassword(e.target.value)
@@ -37,7 +34,6 @@ function Login(props) {
             .then(res => {
                 const token = res.data.authToken
                 logInUser(token)
-                navigate("/my-account")
             })
             .catch(err => {
                 const errorDescription = err.response.data.message
@@ -45,7 +41,9 @@ function Login(props) {
             })
     }
 
-    return (
+    return isLoggedIn ? (
+        <Navigate to="/my-account" />
+    ) : (
         <Page title="Login" description="" keywords="">
             <Container>
                 <Aside />
@@ -53,10 +51,7 @@ function Login(props) {
                 <Content>
                     <NavLogin />
 
-                    <Form
-                        onSubmit={handleSubmit}
-                        btnPrimary="Log in"
-                    >
+                    <Form onSubmit={handleSubmit} btnPrimary="Log in">
                         <Input
                             label="Email"
                             id="email"

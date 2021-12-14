@@ -24,6 +24,7 @@ import { AuthContext } from "../../context/auth"
 // Utils
 import convertDate from "../../components/utils/ConvertDate"
 import getToday from "../../components/utils/GetToday"
+import { Link } from "react-router-dom"
 
 function ArtistDetail(props) {
     const conditions =
@@ -106,7 +107,8 @@ function ArtistDetail(props) {
                         </>
                     ) : !isLoggedIn ? (
                         <Font.P>
-                            Please log in to contact {props.artist.fullName}
+                            Please <Link to="/login">log in</Link> to contact{" "}
+                            {props.artist.fullName}
                         </Font.P>
                     ) : (
                         ""

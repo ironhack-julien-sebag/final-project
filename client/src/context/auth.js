@@ -24,6 +24,7 @@ function AuthProviderWrapper(props) {
         localStorage.removeItem("authToken")
         setIsLoggedIn(false)
         setUser(null)
+        navigate("/")
     }
 
     const verifyStoredToken = () => {
