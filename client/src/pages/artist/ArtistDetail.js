@@ -45,7 +45,7 @@ function ArtistDetail(props) {
                         alt={props.artist.fullName}
                     />
 
-                    {isLoggedIn && user.role === "artist" && (
+                    {/* {isLoggedIn && user.role === "artist" && (
                         <Button
                             to={`/artists/${props.artist._id}/edit`}
                             primary
@@ -53,7 +53,7 @@ function ArtistDetail(props) {
                         >
                             Edit
                         </Button>
-                    )}
+                    )} */}
                 </Aside>
 
                 <ArtistContainer>
@@ -75,32 +75,42 @@ function ArtistDetail(props) {
                         </>
                     )}
 
-                    <Font.H3>Contact {props.artist.fullName}</Font.H3>
+                    {isLoggedIn && user._id !== props.artist._id ? (
+                        <>
+                            <Font.H3>Contact {props.artist.fullName}</Font.H3>
 
-                    <Form action="" method="POST" btnPrimary="Send">
-                        <Input
-                            type="hidden"
-                            name="email"
-                            id="emailArtist"
-                            value="userEmail"
-                            hidden
-                        />
+                            <Form action="" method="POST" btnPrimary="Send">
+                                <Input
+                                    type="hidden"
+                                    name="email"
+                                    id="emailArtist"
+                                    value="userEmail"
+                                    hidden
+                                />
 
-                        <Input
-                            label="Date"
-                            type="date"
-                            name="date"
-                            id="date"
-                            min={getToday()}
-                            value={getToday()}
-                        />
+                                <Input
+                                    label="Date"
+                                    type="date"
+                                    name="date"
+                                    id="date"
+                                    min={getToday()}
+                                    value={getToday()}
+                                />
 
-                        <Textarea
-                            label="Your message"
-                            name="message"
-                            id="message"
-                        />
-                    </Form>
+                                <Textarea
+                                    label="Your message"
+                                    name="message"
+                                    id="message"
+                                />
+                            </Form>
+                        </>
+                    ) : !isLoggedIn ? (
+                        <Font.P>
+                            Please log in to contact {props.artist.fullName}
+                        </Font.P>
+                    ) : (
+                        ""
+                    )}
                 </ArtistContainer>
 
                 <Aside>

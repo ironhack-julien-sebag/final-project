@@ -16,13 +16,19 @@ function AccountUser() {
         <Page title={user.fullName} description="" keywords="">
             <Container>
                 <Aside>
-                    <ProfilePicture
-                        src={user.imageUrl}
-                        alt={user.fullName}
-                    />
+                    <ProfilePicture src={user.imageUrl} alt={user.fullName} />
                     {/* <Button to="/my-account/edit" primary justify="center">
                         Edit your account
                     </Button> */}
+                    {user.role === "artist" && (
+                        <Button
+                            primary
+                            to={`/artists/${user._id}`}
+                            justify="center"
+                        >
+                            Check your page
+                        </Button>
+                    )}
                 </Aside>
 
                 <Content large>
