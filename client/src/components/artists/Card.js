@@ -79,15 +79,15 @@ const TextInfo = styled.span`
 function Card({artist}) {
     return (
         <Container>
-            <Link to={`/artists/${artist._id.$oid}`}>
-                <ProfilePicture src={artist.picture} alt={artist.name} />
+            <Link to={`/artists/${artist._id}`}>
+                <ProfilePicture src={artist.imageUrl} alt={artist.fullName} />
             </Link>
 
             <Content>
                 <TitleContainer>
                     <Title>
-                        <Link to={`/artists/${artist._id.$oid}`}>
-                            {artist.name}
+                        <Link to={`/artists/${artist._id}`}>
+                            {artist.fullName}
                         </Link>
                     </Title>
 
@@ -98,7 +98,7 @@ function Card({artist}) {
                             color={Variables.ThemeColors.Primary}
                         />
 
-                        {artist.location}
+                        {artist.city}
                     </Location>
                 </TitleContainer>
 
@@ -118,7 +118,7 @@ function Card({artist}) {
                         </Font.P>
                     </TextInfo>
 
-                    <ButtonStyled to={`/artists/${artist._id.$oid}`} primary>
+                    <ButtonStyled to={`/artists/${artist._id}`} primary>
                         See their page
                     </ButtonStyled>
                 </Info>

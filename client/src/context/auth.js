@@ -1,7 +1,7 @@
 // Packages
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-// import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const AuthContext = React.createContext()
 
@@ -12,12 +12,12 @@ function AuthProviderWrapper(props) {
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
 
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     const logInUser = token => {
         localStorage.setItem("authToken", token)
         verifyStoredToken()
-        // navigate("/my-account")
+        navigate("/my-account")
     }
 
     const logoutUser = () => {
@@ -41,7 +41,7 @@ function AuthProviderWrapper(props) {
                     setIsLoading(false)
                 })
                 .catch(err => {
-                    console.log(err)
+                    // console.log(err)
                     setIsLoggedIn(false)
                     setUser(null)
                     setIsLoading(false)

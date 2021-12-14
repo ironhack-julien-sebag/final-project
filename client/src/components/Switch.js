@@ -1,7 +1,8 @@
 // Packages
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Routes, Route } from "react-router-dom"
 import { v4 as uuid } from "uuid"
+import axios from "axios"
 
 // Pages
 import Home from "../pages/Home"
@@ -85,6 +86,12 @@ import EditPassword from "../pages/user/EditPassword"
 // ]
 
 function Switch() {
+    const [artistsList, setArtistsList] = useState([])
+
+    useEffect(() => {
+        axios.get("/api/users").then(res => setArtistsList(res.data)).catch(err => console.log(err))
+    }, [])
+
     return (
         <Routes>
             <Route path="/" element={<Home />} />
@@ -100,41 +107,41 @@ function Switch() {
             {/* Artist */}
             <Route path="/artists" element={<Artists />} />
 
-            {artists.map(artist => (
+            {artistsList.map(artist => (
                 <>
                     {/* Artist page */}
                     <Route
-                        path={`/artists/${artist._id.$oid}`}
+                        path={`/artists/${artist._id}`}
                         element={<ArtistDetail artist={artist} />}
                         key={uuid()}
                     />
                     {/* Edit artist page */}
                     <Route
-                        path={`/artists/${artist._id.$oid}/edit`}
+                        path={`/artists/${artist._id}/edit`}
                         element={
                             <ProtectedRoute redirectTo="/login">
                                 <EditArtist artist={artist} />
                             </ProtectedRoute>
                         }
-                        key={`/artists/${artist._id.$oid}/edit`}
+                        key={`/artists/${artist._id}/edit`}
                     />
                     {/* Artist account */}
                     <Route
-                        path={`/artist/${artist._id.$oid}`}
+                        path={`/artist/${artist._id}`}
                         element={
                             <ProtectedRoute redirectTo="/login">
                                 <ArtistAccount artist={artist} />
                             </ProtectedRoute>
                         }
-                        key={`/artist/${artist._id.$oid}`}
+                        key={`/artist/${artist._id}`}
                     />
                     {/* Edit artist account */}
                     <Route
-                        path={`/artist/${artist._id.$oid}/edit`}
+                        path={`/artist/${artist._id}/edit`}
                         element={
                             <ProtectedRoute redirectTo="/login"></ProtectedRoute>
                         }
-                        key={`/artist/${artist._id.$oid}/edit`}
+                        key={`/artist/${artist._id}/edit`}
                     />
                 </>
             ))}

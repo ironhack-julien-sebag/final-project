@@ -1,7 +1,9 @@
 // Imports
-import React from "react"
+import React, { useState, useContext, useEffect } from "react"
 // import styled from "styled-components"
 import { Link } from "react-router-dom"
+import { AuthContext } from "../../context/auth"
+// import { useParams, useNavigate } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -14,63 +16,76 @@ import Input from "../../components/forms/Input"
 import Button from "../../components/ui/Button"
 
 function EditAccount() {
+    const user = useContext(AuthContext).user
+
+    const [fullName, setFullName] = useState(user.fullName)
+    const [email, setEmail] = useState(user.email)
+    const [address, setAddress] = useState(user.address)
+    const [avatar, setAvatar] = useState(user.imageUrl)
+
+    const handleFullName = e => setFullName(e.target.value)
+    const handleEmail = e => setEmail(e.target.value)
+    const handleAddress = e => setAddress(e.target.value)
+    
+    const handleSubmit = e => {
+        e.preventDefault()
+        
+    }
+
     return (
-        <Page
-            title="Edit your account"
-            description=""
-            keywords=""
-            headerBackground
-        >
-            <Container>
-                <Aside>
-                    <ProfilePicture
-                        edit
-                        src="/images/julien.jpg"
-                        alt="Profile picture Julien Sebag"
-                    />
-
-                    <Button primary justify="center">Save</Button>
-                </Aside>
-
-                <Content large>
-                    <Font.H1>Edit your account</Font.H1>
-
-                    <Form
-                        action=""
-                        method="POST"
-                        // btnPrimary="Edit your account"
-                        // backLink="/my-account"
-                        // btnSecondary="Cancel"
-                    >
-                        <Input
-                            label="Your name"
-                            name="fullName"
-                            id="fullName"
-                            value="Julien Sebag"
-                        />
-                        <Input
-                            label="Your email"
-                            name="email"
-                            id="emailEdit"
-                            type="email"
-                            value="a@b.com"
-                            disabled
-                        />
-                        <Input
-                            label="Your address"
-                            name="address"
-                            id="address"
-                            value="Stephanstraẞe 26, 10559, Berlin"
+        <Page title="Edit your account" description="" keywords="">
+            <form onSubmit={handleSubmit}>
+                <Container>
+                    <Aside>
+                        <ProfilePicture
+                            edit
+                            src={user.imageUrl}
+                            alt={user.fullName}
                         />
 
-                        <Font.P>
-                            <Link to="/my-account/edit/edit-password">
-                                Change your password
-                            </Link>
-                        </Font.P>
-                    </Form>
-                </Content>
-            </Container>
+                        <Button primary justify="center">
+                            Save
+                        </Button>
+                    </Aside>
+
+                    <Content large>
+                        <Font.H1>Edit your account</Font.H1>
+
+                        <Form container>
+                            <Input
+                                label="Your name"
+                                name="fullName"
+                                id="fullName"
+                                defaultValue={user.fullName}
+                                onChange={handleFullName}
+                            />
+                            {/* <input onChange={e => handleFullName(e)} defaultValue={user.fullName} /> */}
+                            <Input
+                                label="Your email"
+                                name="email"
+                                id="emailEdit"
+                                type="email"
+                                value={user.email}
+                                onChange={handleEmail}
+                                disabled
+                            />
+                            <Input
+                                label="Your city"
+                                name="city"
+                                id="city"
+                                defaultValue={user.city}
+                                onChange={handleAddress}
+                            />
+
+                            <Font.P>
+                                <Link to="/my-account/edit/edit-password">
+                                    Change your password
+                                </Link>
+                            </Font.P>
+                        </Form>
+                    </Content>
+                </Container>
+            </form>
         </Page>
     )
 }

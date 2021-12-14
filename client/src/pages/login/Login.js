@@ -35,20 +35,18 @@ function Login(props) {
         axios
             .post(`${API_URL}/auth/login`, requestBody)
             .then(res => {
-                // console.log(`JWT Token: ${res.data.authToken}`)
                 const token = res.data.authToken
                 logInUser(token)
                 navigate("/my-account")
             })
             .catch(err => {
-                const errorDescription = err.data.message
+                const errorDescription = err.response.data.message
                 setErrorMessage(errorDescription)
-                // console.log(err)
             })
     }
 
     return (
-        <Page title="Login" description="" keywords="" headerBackground>
+        <Page title="Login" description="" keywords="">
             <Container>
                 <Aside />
 

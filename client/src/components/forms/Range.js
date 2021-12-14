@@ -23,7 +23,7 @@ function Range(props) {
                 id={props.name}
                 min={props.min}
                 max={props.max}
-                value={props.min}
+                defaultValue={props.min}
                 onChange={props.changeMin}
             />
 
@@ -34,7 +34,7 @@ function Range(props) {
                 id={props.name}
                 min={props.min}
                 max={props.max}
-                value={props.max}
+                defaultValue={props.max}
                 onChange={props.changeMax}
             />
         </Container>

@@ -1,14 +1,9 @@
-// Packages
 import React, { useContext } from "react"
-import { Navigate } from "react-router-dom"
 import { AuthContext } from "../../context/auth"
+import { Navigate } from "react-router-dom"
 
-function ProtectedRoute({ children, redirectTo }) {
-    const { isLoggedIn } = useContext(AuthContext)
-
-    console.log(`Logged: ${isLoggedIn}`)
-
+export default function ProtectedRoute({ children, redirectTo }) {
+    const { isLoggedIn, isLoading } = useContext(AuthContext)
+    if (isLoading) return <p>Is Loading ...</p>
     return isLoggedIn ? children : <Navigate to={redirectTo} />
 }
-
-export default ProtectedRoute

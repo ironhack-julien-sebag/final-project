@@ -26,7 +26,6 @@ function EditArtist(props) {
             title={`Edit ${props.artist.name}`}
             description=""
             keywords=""
-            headerBackground
         >
             <Container>
                 <Aside artist>

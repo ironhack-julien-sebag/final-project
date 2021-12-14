@@ -1,5 +1,6 @@
 // Imports
-import React from "react"
+import React, { useContext } from "react"
+import { AuthContext } from "../../context/auth"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -9,21 +10,23 @@ import ProfilePicture from "../../components/artists/ProfilePicture"
 import Button from "../../components/ui/Button"
 
 function AccountUser() {
+    const user = useContext(AuthContext).user
+
     return (
-        <Page title="User name" description="" keywords="" headerBackground>
+        <Page title={user.fullName} description="" keywords="">
             <Container>
                 <Aside>
                     <ProfilePicture
-                        src="/images/julien.jpg"
-                        alt="Profile picture Julien Sebag"
+                        src={user.imageUrl}
+                        alt={user.fullName}
                     />
-                    <Button to="/my-account/edit" primary justify="center">
+                    {/* <Button to="/my-account/edit" primary justify="center">
                         Edit your account
-                    </Button>
+                    </Button> */}
                 </Aside>
 
                 <Content large>
-                    <Font.H1>Welcome fullName</Font.H1>
+                    <Font.H1>Welcome {user.fullName}</Font.H1>
 
                     <Font.H2>Messages</Font.H2>
                 </Content>

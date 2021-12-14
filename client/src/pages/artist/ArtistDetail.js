@@ -1,5 +1,5 @@
 // Imports
-import React from "react"
+import React, { useContext } from "react"
 import { v4 as uuid } from "uuid"
 
 // Components
@@ -19,6 +19,7 @@ import ButtonSocial from "../../components/ui/ButtonSocial"
 import Button from "../../components/ui/Button"
 import TextIcon from "../../components/forms/TextIcon"
 import SocialContainer from "../../components/ui/SocialContainer"
+import { AuthContext } from "../../context/auth"
 
 // Utils
 import convertDate from "../../components/utils/ConvertDate"
@@ -29,33 +30,36 @@ function ArtistDetail(props) {
         props.artist.youtubeLink ||
         props.artist.facebookLink ||
         props.artist.instagramLink
+
+    const { isLoggedIn } = useContext(AuthContext)
+    const user = useContext(AuthContext).user
+
+    console.log(props.artist)
+
     return (
-        <Page
-            title={props.artist.name}
-            description=""
-            keywords=""
-            headerBackground
-        >
+        <Page title={props.artist.fullName} description="" keywords="">
             <Container>
                 <Aside artist>
                     <ProfilePicture
-                        src={props.artist.picture}
-                        alt={props.artist.name}
+                        src={props.artist.imageUrl}
+                        alt={props.artist.fullName}
                     />
 
-                    <Button
-                        to={`/artists/${props.artist._id.$oid}/edit`}
-                        primary
-                        justify="center"
-                    >
-                        Edit
-                    </Button>
+                    {isLoggedIn && user.role === "artist" && (
+                        <Button
+                            to={`/artists/${props.artist._id}/edit`}
+                            primary
+                            justify="center"
+                        >
+                            Edit
+                        </Button>
+                    )}
                 </Aside>
 
                 <ArtistContainer>
-                    <Font.H1>{props.artist.name}</Font.H1>
+                    <Font.H1>{props.artist.fullName}</Font.H1>
 
-                    <TextIcon title="Location" value={props.artist.location} />
+                    <TextIcon title="Location" value={props.artist.city} />
 
                     <TextIcon title="Price" value={`${props.artist.price}€`} />
 
@@ -71,7 +75,7 @@ function ArtistDetail(props) {
                         </>
                     )}
 
-                    <Font.H3>Contact {props.artist.name}</Font.H3>
+                    <Font.H3>Contact {props.artist.fullName}</Font.H3>
 
                     <Form action="" method="POST" btnPrimary="Send">
                         <Input
@@ -111,33 +115,33 @@ function ArtistDetail(props) {
                     </ItemContainer>
 
                     {conditions && (
-                            <ItemContainer>
-                                <Font.H4>Follow</Font.H4>
+                        <ItemContainer>
+                            <Font.H4>Follow</Font.H4>
 
-                                <SocialContainer>
-                                    {props.artist.youtubeLink && (
-                                        <ButtonSocial
-                                            type="youtube"
-                                            to={props.artist.youtubeLink}
-                                        />
-                                    )}
+                            <SocialContainer>
+                                {props.artist.youtubeLink && (
+                                    <ButtonSocial
+                                        type="youtube"
+                                        to={props.artist.youtubeLink}
+                                    />
+                                )}
 
-                                    {props.artist.facebookLink && (
-                                        <ButtonSocial
-                                            type="facebook"
-                                            to={props.artist.facebookLink}
-                                        />
-                                    )}
+                                {props.artist.facebookLink && (
+                                    <ButtonSocial
+                                        type="facebook"
+                                        to={props.artist.facebookLink}
+                                    />
+                                )}
 
-                                    {props.artist.instagramLink && (
-                                        <ButtonSocial
-                                            type="instagram"
-                                            to={props.artist.instagramLink}
-                                        />
-                                    )}
-                                </SocialContainer>
-                            </ItemContainer>
-                        )}
+                                {props.artist.instagramLink && (
+                                    <ButtonSocial
+                                        type="instagram"
+                                        to={props.artist.instagramLink}
+                                    />
+                                )}
+                            </SocialContainer>
+                        </ItemContainer>
+                    )}
                 </Aside>
             </Container>
         </Page>

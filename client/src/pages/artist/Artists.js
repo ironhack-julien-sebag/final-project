@@ -1,42 +1,61 @@
 // Imports
-import React, { useState } from "react"
-// import styled from "styled-components"
+import React, { useState, useEffect, useContext } from "react"
 import { v4 as uuid } from "uuid"
+import axios from "axios"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
-import Container, {
-    // Aside,
-    Content,
-    // ItemContainer,
-} from "../../components/layouts/Container"
+import Container, { Content } from "../../components/layouts/Container"
 import SearchArtists from "../../components/forms/SearchArtists"
-// import * as Variables from "../../components/styles/Variables"
 import List from "../../components/artists/List"
 import Card from "../../components/artists/Card"
-// import Form from "../../components/forms/Form"
-// import Input from "../../components/forms/Input"
-// import Range from "../../components/forms/Range"
-// import Select from "../../components/forms/Select"
-// import Radio from "../../components/forms/Radio"
 
 // Utils
-// import convertDate from "../../components/utils/ConvertDate"
 import { getMinPrice, getMaxPrice } from "../../components/utils/MinMaxPrice"
 
-// Data
-// import SiteData from "../../components/data/SiteData"
-// import Seed from "../../components/data/Seed"
-import artists from "../../components/data/artists.json"
-// import Button from "../../components/ui/Button"
-
 function Artists() {
-    const [artistsList] = useState(artists)
-    const [query, setQuery] = useState("")
+    // const [artistsList, setArtistsList] = useState(artists)
+    const [artistsList, setArtistsList] = useState([])
 
-    const [minPrice, setMinPrice] = useState(getMinPrice(artistsList))
-    const [maxPrice, setMaxPrice] = useState(getMaxPrice(artistsList))
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState(20000)
+
+    const storedToken = localStorage.getItem("authToken")
+
+    // const getAllArtists = () => {
+    //     axios
+    //         .get("/api/users", {
+    //             headers: { Authorization: `Bearer ${storedToken}` },
+    //         })
+    //         .then(res => {
+    //             setArtistsList(res.data)
+
+    //             setMinPrice(getMinPrice(res.data))
+    //             setMaxPrice(getMaxPrice(res.data))
+    //         })
+    //         .catch(err => console.log(err))
+    // }
+
+    // useEffect(() => {
+    //     getAllArtists()
+    // }, [])
+
+    useEffect(() => {
+        axios.get("/api/users").then(res => {
+            console.log(res.data)
+            setArtistsList(res.data)
+        }).catch(err => console.log(err))
+    }, [])
+
+    
+
+    let allArtists = artistsList.filter(artist => artist.role === "artist")
+
+    // console.log(allArtists)
+
+    // const [artistsList] = useState(artists)
+    const [query, setQuery] = useState("")
 
     const [sortedPrice, setSortedPrice] = useState(false)
     const [sortedDate, setSortedDate] = useState(false)
@@ -56,9 +75,16 @@ function Artists() {
         setMaxPrice(e.target.value)
     }
 
-    let results = artistsList.filter(artist =>
-        artist.name.toLowerCase().includes(query)
+    let results = allArtists.filter(
+        artist =>
+            artist.fullName.toLowerCase().includes(query) &&
+            artist.price >= minPrice &&
+            artist.price <= maxPrice
     )
+
+    // results = results.filter(
+    //     artist => artist.price >= minPrice && artist.price <= maxPrice
+    // )
 
     const sortByPrice = e => {
         setSortedPrice(e.target.checked)
@@ -83,7 +109,7 @@ function Artists() {
     const handleCityChange = e => setCity(e.target.value)
 
     if (city !== "All") {
-        results = results.filter(artist => city === artist.location)
+        results = results.filter(artist => city === artist.city)
     }
 
     const handleGenreChange = e => setGenre(e.target.value)
@@ -92,20 +118,24 @@ function Artists() {
         results = results.filter(artist => genre === artist.genre)
     }
 
+    console.log(results)
+
     return (
-        <Page title="Artists" description="" keywords="" headerBackground>
+        <Page title="Artists" description="" keywords="">
             <Container>
                 <SearchArtists
                     handleSearch={handleSearch}
                     sortByPrice={sortByPrice}
                     sortByAvailabilities={sortByDate}
-                    artists={artists}
+                    artists={artistsList}
                     changeMin={handleMinPrice}
                     changeMax={handleMaxPrice}
                     handleCity={handleCityChange}
                     valueSelectLocation={city}
                     handleGenre={handleGenreChange}
                     valueSelectGenre={genre}
+                    min={0}
+                    max={20000}
                 />
 
                 <Content large>

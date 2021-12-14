@@ -12,7 +12,7 @@ import Input from "../../components/forms/Input"
 
 function ForgotPassword() {
     return (
-        <Page title="ForgotPassword" description="" keywords="" headerBackground>
+        <Page title="ForgotPassword" description="" keywords="">
             <Container>
                 <Aside />
                 <Content>

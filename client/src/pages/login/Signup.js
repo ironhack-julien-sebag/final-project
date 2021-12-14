@@ -46,7 +46,6 @@ function Signup(props) {
             title="Create your account"
             description=""
             keywords=""
-            headerBackground
         >
             <Container>
                 <Aside />

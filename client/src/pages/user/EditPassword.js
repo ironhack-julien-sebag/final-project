@@ -12,7 +12,7 @@ import Password from "../../components/forms/Password"
 
 function EditPassword() {
     return (
-        <Page title="EditPassword" description="" keywords="" headerBackground>
+        <Page title="EditPassword" description="" keywords="">
             <Container>
                 <Aside />
 

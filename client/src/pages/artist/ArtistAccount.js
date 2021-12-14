@@ -22,7 +22,7 @@ function ArtistAccount() {
             <Container>
                 <Aside>
                     <ProfilePicture src={Rone.picture} alt={Rone.name} />
-                    <Button primary to={`/artists/${Rone._id.$oid}`} justify="center">Check your page</Button>
+                    <Button primary to={`/artists/${Rone._id}`} justify="center">Check your page</Button>
                     <Button to="artist/edit" justify="center">Edit your account</Button>
                 </Aside>
 

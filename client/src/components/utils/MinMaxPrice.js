@@ -2,18 +2,27 @@ export const getMinPrice = data => {
     let arr = []
 
     data.forEach(artist => {
-        arr.push(artist.price)
+        if (artist.price === undefined) {
+            arr.push(0)
+        } else {
+            arr.push(parseInt(artist.price))
+        }
     })
 
-    return Math.min.apply(Math, arr)
+    // return parseInt(Math.min.apply(Math, arr))
+    return Math.min(...arr)
 }
 
 export const getMaxPrice = data => {
     let arr = []
 
     data.forEach(artist => {
-        arr.push(artist.price)
+        if (artist.price === undefined) {
+            arr.push(0)
+        } else {
+            arr.push(parseInt(artist.price))
+        }
     })
 
-    return Math.max.apply(Math, arr)
+    return parseInt(Math.max.apply(Math, arr))
 }

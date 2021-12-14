@@ -70,8 +70,8 @@ function SearchArtists(props) {
                         labelMin="Min price"
                         labelMax="Max price"
                         id="rangePrice"
-                        min={getMinPrice(props.artists)}
-                        max={getMaxPrice(props.artists)}
+                        min={props.min}
+                        max={props.max}
                         changeMin={props.changeMin}
                         changeMax={props.changeMax}
                     />
