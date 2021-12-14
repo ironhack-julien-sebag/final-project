@@ -16,8 +16,19 @@ const userSchema = new Schema(
             type: String,
             required: true,
         },
-        address: String,
+        city: String,
         role: String,
+        imageUrl: String,
+
+        // Artists
+        genre: String,
+        bio: String,
+        price: Number,
+        available: Array,
+        youtube: Array,
+        youtubeLink: String,
+        facebookLink: String,
+        instagramLink: String,
     },
     {
         // this second object adds extra properties: `createdAt` and `updatedAt`

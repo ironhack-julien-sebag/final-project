@@ -2,13 +2,22 @@ const router = require("express").Router()
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const User = require("../models/User.model")
+const fileUploader = require("../config/cloudinary.config")
 
 const { isAuthenticated } = require("../middleware/jwt.middleware")
 
 const saltRounds = 10
 
+const randomAvatar = () => {
+    const random = Math.floor(Math.random() * 114)
+    const randomMf = Math.floor(Math.random() + 0.5)
+    const mf = ["male", "female"]
+
+    return `https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/${mf[randomMf]}/${random}.png`
+}
+
 router.post("/signup", (req, res, next) => {
-    const { fullName, email, password, address, role } = req.body
+    const { fullName, email, password, city, role, imageUrl } = req.body
 
     if (fullName === "" || email === "" || password === "") {
         res.status(400).json({ message: "Provide email, password and name" })
@@ -43,16 +52,18 @@ router.post("/signup", (req, res, next) => {
             fullName,
             email,
             password: hashedPassword,
-            address,
-            role,
+            city,
+            role: "user",
+            imageUrl: randomAvatar(),
         })
             .then(createdUser => {
-                const { fullName, email, role, _id } = createdUser
-                const user = { fullName, email, role, _id }
+                const { fullName, email, _id, city, role, imageUrl } =
+                    createdUser
+                const user = { fullName, email, _id, city, role, imageUrl }
                 res.status(201).json({ user: user })
             })
             .catch(err => {
-                next(err)
+                console.log(err)
                 res.status(500).json({ message: "Internal server error" })
             })
     })
@@ -81,8 +92,15 @@ router.post("/login", (req, res, next) => {
             )
 
             if (passwordCorrect) {
-                const { fullName, email, _id } = foundUser
-                const payload = { fullName, email, _id }
+                const { fullName, email, _id, city, role, imageUrl } = foundUser
+                const payload = {
+                    fullName,
+                    email,
+                    _id,
+                    city,
+                    role,
+                    imageUrl,
+                }
 
                 const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
                     algorithm: "HS256",
@@ -96,9 +114,10 @@ router.post("/login", (req, res, next) => {
                 })
             }
         })
-        .catch(err =>
+        .catch(err => {
+            console.log(err)
             res.status(500).json({ message: "Internal Server Error" })
-        )
+        })
 })
 
 router.get("/verify", isAuthenticated, (req, res, next) => {
