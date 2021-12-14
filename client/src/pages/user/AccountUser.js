@@ -1,6 +1,7 @@
 // Imports
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../../context/auth"
+import axios from "axios"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -11,6 +12,22 @@ import Button from "../../components/ui/Button"
 
 function AccountUser() {
     const user = useContext(AuthContext).user
+
+    // Messages
+    const [messagesList, setMessagesList] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        axios
+            .get("/api/messaging/all-messages")
+            .then(res => {
+                setMessagesList(res.data)
+                setIsLoading(false)
+            })
+            .catch(err => console.log(err))
+    }, [])
+
+    console.log(messagesList)
 
     return (
         <Page title={user.fullName} description="" keywords="">
@@ -35,6 +52,19 @@ function AccountUser() {
                     <Font.H1>Welcome {user.fullName}</Font.H1>
 
                     <Font.H2>Messages</Font.H2>
+
+                    {isLoading ? (
+                        <Font.P>Loading</Font.P>
+                    ) : (
+                        <div>
+                            {messagesList.map(message =>
+                                message.sender._id === user._id ||
+                                message.receiver._id === user._id
+                                    ? message.message
+                                    : ""
+                            )}
+                        </div>
+                    )}
                 </Content>
             </Container>
         </Page>

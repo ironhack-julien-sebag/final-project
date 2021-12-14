@@ -23,11 +23,9 @@ app.use("/api", allRoutes)
 
 const userRouter = require("./routes/user")
 app.use("/api", userRouter)
-// app.use("/protected", isAuthenticated)
 
-
-// const artistRouter = require("./routes/artist")
-// app.use("/api", isAuthenticated, artistRouter)
+const messageRouter = require("./routes/message")
+app.use("/api/messaging", messageRouter)
 
 const authRouter = require("./routes/auth")
 app.use("/auth", authRouter)

@@ -61,7 +61,7 @@ function Textarea(props) {
                     {props.value && props.value}
                 </Input>
             ) : (
-                <Input name={props.name} id={props.id} {...props}>
+                <Input name={props.name} id={props.id} onChange={props.onChange} {...props}>
                     {props.value && props.value}
                 </Input>
             )}
