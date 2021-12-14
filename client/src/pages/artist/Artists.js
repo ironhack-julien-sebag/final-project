@@ -1,5 +1,5 @@
 // Imports
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import { v4 as uuid } from "uuid"
 import axios from "axios"
 
@@ -12,49 +12,29 @@ import List from "../../components/artists/List"
 import Card from "../../components/artists/Card"
 
 // Utils
-import { getMinPrice, getMaxPrice } from "../../components/utils/MinMaxPrice"
+// import { getMinPrice, getMaxPrice } from "../../components/utils/MinMaxPrice"
 
 function Artists() {
-    // const [artistsList, setArtistsList] = useState(artists)
     const [artistsList, setArtistsList] = useState([])
 
     const [minPrice, setMinPrice] = useState(0)
     const [maxPrice, setMaxPrice] = useState(20000)
 
-    const storedToken = localStorage.getItem("authToken")
-
-    // const getAllArtists = () => {
-    //     axios
-    //         .get("/api/users", {
-    //             headers: { Authorization: `Bearer ${storedToken}` },
-    //         })
-    //         .then(res => {
-    //             setArtistsList(res.data)
-
-    //             setMinPrice(getMinPrice(res.data))
-    //             setMaxPrice(getMaxPrice(res.data))
-    //         })
-    //         .catch(err => console.log(err))
-    // }
-
-    // useEffect(() => {
-    //     getAllArtists()
-    // }, [])
+    // Loading state
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        axios.get("/api/users").then(res => {
-            console.log(res.data)
-            setArtistsList(res.data)
-        }).catch(err => console.log(err))
+        axios
+            .get("/api/users")
+            .then(res => {
+                setArtistsList(res.data)
+                setIsLoading(false)
+            })
+            .catch(err => console.log(err))
     }, [])
-
-    
 
     let allArtists = artistsList.filter(artist => artist.role === "artist")
 
-    // console.log(allArtists)
-
-    // const [artistsList] = useState(artists)
     const [query, setQuery] = useState("")
 
     const [sortedPrice, setSortedPrice] = useState(false)
@@ -81,10 +61,6 @@ function Artists() {
             artist.price >= minPrice &&
             artist.price <= maxPrice
     )
-
-    // results = results.filter(
-    //     artist => artist.price >= minPrice && artist.price <= maxPrice
-    // )
 
     const sortByPrice = e => {
         setSortedPrice(e.target.checked)
@@ -142,14 +118,18 @@ function Artists() {
                     <Font.H1 hidden>Artists list</Font.H1>
 
                     <List>
-                        {results.length === 0 ? (
+                        {isLoading ? (
+                            <Font.P>Loading</Font.P>
+                        ) : !isLoading && results.length === 0 ? (
                             <Font.P>
                                 No artists are corresponding to your search
                             </Font.P>
-                        ) : (
+                        ) : !isLoading && results.length !== 0 ? (
                             results.map(artist => (
                                 <Card artist={artist} key={uuid()} />
                             ))
+                        ) : (
+                            ""
                         )}
                     </List>
                 </Content>
