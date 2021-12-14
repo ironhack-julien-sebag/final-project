@@ -1,7 +1,7 @@
 // Imports
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 // import styled from "styled-components"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, Navigate } from "react-router-dom"
 import axios from "axios"
 
 // Components
@@ -12,6 +12,7 @@ import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
 import * as Font from "../../components/styles/Font"
+import { AuthContext } from "../../context/auth"
 
 const API_URL = "http://localhost:5005"
 
@@ -41,12 +42,12 @@ function Signup(props) {
             })
     }
 
-    return (
-        <Page
-            title="Create your account"
-            description=""
-            keywords=""
-        >
+    const { isLoggedIn } = useContext(AuthContext)
+
+    return isLoggedIn ? (
+        <Navigate to="/my-account" />
+    ) : (
+        <Page title="Create your account" description="" keywords="">
             <Container>
                 <Aside />
 
@@ -63,7 +64,12 @@ function Signup(props) {
                             <Link to="#contact">contact us!</Link>
                         </Font.P>
 
-                        <Input type="hidden" id="role" name="role" value="user" />
+                        <Input
+                            type="hidden"
+                            id="role"
+                            name="role"
+                            value="user"
+                        />
 
                         <Input
                             label="Full name"
