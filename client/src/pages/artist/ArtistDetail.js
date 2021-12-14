@@ -1,6 +1,8 @@
 // Imports
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { v4 as uuid } from "uuid"
+import axios from "axios"
+import { Link, useNavigate } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -24,7 +26,8 @@ import { AuthContext } from "../../context/auth"
 // Utils
 import convertDate from "../../components/utils/ConvertDate"
 import getToday from "../../components/utils/GetToday"
-import { Link } from "react-router-dom"
+
+const API_URL = "http://localhost:5005"
 
 function ArtistDetail(props) {
     const conditions =
@@ -34,6 +37,34 @@ function ArtistDetail(props) {
 
     const { isLoggedIn } = useContext(AuthContext)
     const user = useContext(AuthContext).user
+
+    const navigate = useNavigate()
+
+    // Messages
+    const [message, setMessage] = useState("")
+    const [date, setDate] = useState("")
+
+    const [sender] = useState(user._id)
+    const [receiver] = useState(props.artist._id)
+    const [errorMessage, setErrorMessage] = useState(undefined)
+
+    const handleMessage = e => setMessage(e.target.value)
+    const handleDate = e => setDate(e.target.value.toLocaleString())
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        const requestBody = { message, date, sender, receiver }
+        axios
+            .post(`${API_URL}/api/messaging/send-message`, requestBody)
+            .then(res => {
+                console.log(res)
+                navigate("/my-account")
+            })
+            .catch(err => {
+                const errorDescription = err.response.data.message
+                setErrorMessage(errorDescription)
+            })
+    }
 
     return (
         <Page title={props.artist.fullName} description="" keywords="">
@@ -78,30 +109,42 @@ function ArtistDetail(props) {
                         <>
                             <Font.H3>Contact {props.artist.fullName}</Font.H3>
 
-                            <Form btnPrimary="Send">
+                            <Form btnPrimary="Send" onSubmit={handleSubmit}>
                                 <Input
                                     type="hidden"
-                                    name="email"
-                                    id="email"
-                                    value="userEmail"
+                                    name="sender"
+                                    id="sender"
+                                    value={sender}
                                     hidden
                                 />
 
                                 <Input
-                                    label="Date"
+                                    type="hidden"
+                                    name="receiver"
+                                    id="receiver"
+                                    value={receiver}
+                                    hidden
+                                />
+
+                                <Input
+                                    label="Enquiry for"
                                     type="date"
-                                    name="date"
-                                    id="date"
+                                    name="dateFor"
+                                    id="dateFor"
                                     min={getToday()}
-                                    value={getToday()}
+                                    defaultValue={getToday()}
+                                    onChange={handleDate}
                                 />
 
                                 <Textarea
                                     label="Your message"
                                     name="message"
                                     id="message"
+                                    onChange={handleMessage}
                                 />
                             </Form>
+
+                            {errorMessage && <Font.P>{errorMessage}</Font.P>}
                         </>
                     ) : !isLoggedIn ? (
                         <Font.P>
