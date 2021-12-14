@@ -76,17 +76,24 @@ const TextInfo = styled.span`
     gap: ${Variables.Margins.XS};
 `
 
-function Card({artist}) {
+function Card({ artist }) {
+    function scrollToTop() {
+        window.scrollTo(0, 0)
+    }
+
     return (
         <Container>
-            <Link to={`/artists/${artist._id}`}>
+            <Link to={`/artists/${artist._id}`} onClick={scrollToTop}>
                 <ProfilePicture src={artist.imageUrl} alt={artist.fullName} />
             </Link>
 
             <Content>
                 <TitleContainer>
                     <Title>
-                        <Link to={`/artists/${artist._id}`}>
+                        <Link
+                            to={`/artists/${artist._id}`}
+                            onClick={scrollToTop}
+                        >
                             {artist.fullName}
                         </Link>
                     </Title>
@@ -118,7 +125,11 @@ function Card({artist}) {
                         </Font.P>
                     </TextInfo>
 
-                    <ButtonStyled to={`/artists/${artist._id}`} primary>
+                    <ButtonStyled
+                        to={`/artists/${artist._id}`}
+                        primary
+                        onClick={scrollToTop}
+                    >
                         See their page
                     </ButtonStyled>
                 </Info>

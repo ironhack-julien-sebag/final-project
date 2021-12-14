@@ -21,91 +21,44 @@ import ArtistAccount from "../pages/artist/ArtistAccount"
 // Protected routes
 import ProtectedRoute from "../components/utils/ProtectedRoutes"
 
-// Data artists
-import artists from "./data/artists.json"
-
 // User
 import AccountUser from "../pages/user/AccountUser"
 import EditAccount from "../pages/user/EditAccount"
 import EditPassword from "../pages/user/EditPassword"
 
-// Routes
-// const Pages = [
-//     {
-//         path: "/",
-//         exact: true,
-//         component: Home,
-//     },
-
-//     // Login
-//     {
-//         path: "/login",
-//         component: Login,
-//     },
-
-//     {
-//         path: "/forgot-password",
-//         component: ForgotPassword,
-//     },
-
-//     // Artists
-//     {
-//         path: "/artists",
-//         component: Artists,
-//     },
-//     {
-//         path: "/artist",
-//         component: ArtistAccount
-//     },
-
-//     // {
-//     //     path: "/artists/id",
-//     //     component: ArtistDetail,
-//     // },
-
-//     {
-//         path: "/artists/id/edit",
-//         component: EditArtist,
-//     },
-
-//     // User
-//     {
-//         path: "/my-account",
-//         component: AccountUser,
-//     },
-
-//     {
-//         path: "/my-account/edit",
-//         component: EditAccount,
-//     },
-
-//     {
-//         path: "/my-account/edit/edit-password",
-//         component: EditPassword,
-//     },
-// ]
-
 function Switch() {
     const [artistsList, setArtistsList] = useState([])
 
     useEffect(() => {
-        axios.get("/api/users").then(res => setArtistsList(res.data)).catch(err => console.log(err))
+        axios
+            .get("/api/users")
+            .then(res => setArtistsList(res.data))
+            .catch(err => console.log(err))
     }, [])
+    
+    const scrollToTop = () => {
+        window.scrollTo(0, 0)
+    }
 
     return (
         <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} preload={scrollToTop} />
 
             {/* Login */}
-            {/* <Route path="/login" element={<Login />}>
-                <Route path="/login" element={<LoginForm />} />
-            </Route> */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/login" element={<Login />} preload={scrollToTop} />
+            <Route path="/signup" element={<Signup />} preload={scrollToTop} />
+            <Route
+                path="/forgot-password"
+                element={<ForgotPassword />}
+                preload={scrollToTop}
+            />
 
-            {/* Artist */}
-            <Route path="/artists" element={<Artists />} />
+            {/* Artists list */}
+            <Route
+                path="/artists"
+                element={<Artists />}
+                preload={scrollToTop}
+            />
 
             {artistsList.map(artist => (
                 <>
@@ -114,6 +67,7 @@ function Switch() {
                         path={`/artists/${artist._id}`}
                         element={<ArtistDetail artist={artist} />}
                         key={uuid()}
+                        preload={scrollToTop}
                     />
                     {/* Edit artist page */}
                     <Route
@@ -124,6 +78,7 @@ function Switch() {
                             </ProtectedRoute>
                         }
                         key={`/artists/${artist._id}/edit`}
+                        preload={scrollToTop}
                     />
                     {/* Artist account */}
                     <Route
@@ -134,6 +89,7 @@ function Switch() {
                             </ProtectedRoute>
                         }
                         key={`/artist/${artist._id}`}
+                        preload={scrollToTop}
                     />
                     {/* Edit artist account */}
                     <Route
@@ -142,6 +98,7 @@ function Switch() {
                             <ProtectedRoute redirectTo="/login"></ProtectedRoute>
                         }
                         key={`/artist/${artist._id}/edit`}
+                        preload={scrollToTop}
                     />
                 </>
             ))}
@@ -154,11 +111,8 @@ function Switch() {
                         <AccountUser />
                     </ProtectedRoute>
                 }
+                preload={scrollToTop}
             />
-            {/* <Route
-                path="/my-account"
-                element={<AccountUser />}
-            /> */}
             <Route
                 path="/my-account/edit"
                 element={
@@ -166,6 +120,7 @@ function Switch() {
                         <EditAccount />
                     </ProtectedRoute>
                 }
+                preload={scrollToTop}
             />
             <Route
                 path="/my-account/edit/edit-password"
@@ -174,6 +129,7 @@ function Switch() {
                         <EditPassword />
                     </ProtectedRoute>
                 }
+                preload={scrollToTop}
             />
         </Routes>
     )

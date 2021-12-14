@@ -50,7 +50,7 @@ export const P = styled.p`
     font-weight: ${Variables.FontWeights.Regular};
 
     a {
-        color: ${Variables.ThemeColors.Primary};
+        color: ${Variables.ThemeColors.Primary} !important;
         font-weight: ${Variables.FontWeights.Bold};
         text-decoration: none;
         transition: ${Variables.Transitions.Short};

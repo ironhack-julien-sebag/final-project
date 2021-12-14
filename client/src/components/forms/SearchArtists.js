@@ -16,7 +16,7 @@ import Select from "./Select"
 import Button from "../ui/Button"
 
 // Utils
-import { getMinPrice, getMaxPrice } from "../utils/MinMaxPrice"
+// import { getMinPrice, getMaxPrice } from "../utils/MinMaxPrice"
 
 // Data
 import SiteData from "../data/SiteData"
@@ -84,7 +84,7 @@ function SearchArtists(props) {
                         value={props.valueSelectLocation}
                     >
                         <option value="All">All</option>
-                        {SiteData.Cities.map(city => (
+                        {SiteData.Cities.sort().map(city => (
                             <option value={city} key={uuid()}>
                                 {city}
                             </option>
@@ -99,7 +99,7 @@ function SearchArtists(props) {
                         value={props.valueSelectGenre}
                     >
                         <option value="All">All</option>
-                        {SiteData.Genres.map(genre => (
+                        {SiteData.Genres.sort((a, b) => a - b).map(genre => (
                             <option value={genre} key={uuid()}>
                                 {genre}
                             </option>
