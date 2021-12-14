@@ -26,6 +26,9 @@ import AccountUser from "../pages/user/AccountUser"
 import EditAccount from "../pages/user/EditAccount"
 import EditPassword from "../pages/user/EditPassword"
 
+// Utils
+import scrollToTop from "./utils/ScrollToTop"
+
 function Switch() {
     const [artistsList, setArtistsList] = useState([])
 
@@ -35,10 +38,6 @@ function Switch() {
             .then(res => setArtistsList(res.data))
             .catch(err => console.log(err))
     }, [])
-    
-    const scrollToTop = () => {
-        window.scrollTo(0, 0)
-    }
 
     return (
         <Routes>

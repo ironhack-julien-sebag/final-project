@@ -8,8 +8,9 @@ import Logo from "../ui/LogoLink"
 import * as Variables from "../styles/Variables"
 import { AuthContext } from "../../context/auth"
 
-// Switch color modes
+// Utils
 import ToggleTheme from "../utils/ToggleTheme"
+import scrollToTop from "../utils/ScrollToTop"
 
 // Styles
 const Container = styled.header`
@@ -74,15 +75,23 @@ function Header(props) {
             <Logo />
 
             <Nav>
-                <LinkStyled to="/artists">Artists</LinkStyled>
+                <LinkStyled to="/artists" onClick={scrollToTop}>
+                    Artists
+                </LinkStyled>
 
                 {isLoggedIn ? (
                     <>
-                        <LinkStyled to="/my-account">My account</LinkStyled>
-                        <LinkStyled as="button" onClick={logoutUser}>Log out</LinkStyled>
+                        <LinkStyled to="/my-account" onClick={scrollToTop}>
+                            My account
+                        </LinkStyled>
+                        <LinkStyled as="button" onClick={logoutUser}>
+                            Log out
+                        </LinkStyled>
                     </>
                 ) : (
-                    <LinkStyled to="/login">Log in</LinkStyled>
+                    <LinkStyled to="/login" onClick={scrollToTop}>
+                        Log in
+                    </LinkStyled>
                 )}
 
                 <ToggleTheme

@@ -1,5 +1,5 @@
 // Imports
-import React, { useState, useContext, useEffect } from "react"
+import React, { useContext } from "react"
 // import styled from "styled-components"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../../context/auth"
@@ -18,23 +18,23 @@ import Button from "../../components/ui/Button"
 function EditAccount() {
     const user = useContext(AuthContext).user
 
-    const [fullName, setFullName] = useState(user.fullName)
-    const [email, setEmail] = useState(user.email)
-    const [address, setAddress] = useState(user.address)
-    const [avatar, setAvatar] = useState(user.imageUrl)
+    // const [fullName, setFullName] = useState(user.fullName)
+    // const [email, setEmail] = useState(user.email)
+    // const [address, setAddress] = useState(user.address)
+    // const [avatar, setAvatar] = useState(user.imageUrl)
 
-    const handleFullName = e => setFullName(e.target.value)
-    const handleEmail = e => setEmail(e.target.value)
-    const handleAddress = e => setAddress(e.target.value)
+    // const handleFullName = e => setFullName(e.target.value)
+    // const handleEmail = e => setEmail(e.target.value)
+    // const handleAddress = e => setAddress(e.target.value)
     
-    const handleSubmit = e => {
-        e.preventDefault()
+    // const handleSubmit = e => {
+    //     e.preventDefault()
         
-    }
+    // }
 
     return (
         <Page title="Edit your account" description="" keywords="">
-            <form onSubmit={handleSubmit}>
+            <form>
                 <Container>
                     <Aside>
                         <ProfilePicture
@@ -57,7 +57,6 @@ function EditAccount() {
                                 name="fullName"
                                 id="fullName"
                                 defaultValue={user.fullName}
-                                onChange={handleFullName}
                             />
                             {/* <input onChange={e => handleFullName(e)} defaultValue={user.fullName} /> */}
                             <Input
@@ -66,7 +65,6 @@ function EditAccount() {
                                 id="emailEdit"
                                 type="email"
                                 value={user.email}
-                                onChange={handleEmail}
                                 disabled
                             />
                             <Input
@@ -74,7 +72,6 @@ function EditAccount() {
                                 name="city"
                                 id="city"
                                 defaultValue={user.city}
-                                onChange={handleAddress}
                             />
 
                             <Font.P>

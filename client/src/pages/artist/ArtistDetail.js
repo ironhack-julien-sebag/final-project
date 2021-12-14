@@ -35,8 +35,6 @@ function ArtistDetail(props) {
     const { isLoggedIn } = useContext(AuthContext)
     const user = useContext(AuthContext).user
 
-    console.log(props.artist)
-
     return (
         <Page title={props.artist.fullName} description="" keywords="">
             <Container>
@@ -80,11 +78,11 @@ function ArtistDetail(props) {
                         <>
                             <Font.H3>Contact {props.artist.fullName}</Font.H3>
 
-                            <Form action="" method="POST" btnPrimary="Send">
+                            <Form btnPrimary="Send">
                                 <Input
                                     type="hidden"
                                     name="email"
-                                    id="emailArtist"
+                                    id="email"
                                     value="userEmail"
                                     hidden
                                 />

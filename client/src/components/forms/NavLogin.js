@@ -4,8 +4,8 @@ import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 
 // Components
-import * as Variables from "../styles/Variables"
-import * as Font from "../styles/Font"
+// import * as Variables from "../styles/Variables"
+// import * as Font from "../styles/Font"
 
 // Styles
 const Container = styled.div`

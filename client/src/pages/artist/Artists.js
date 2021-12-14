@@ -94,8 +94,6 @@ function Artists() {
         results = results.filter(artist => genre === artist.genre)
     }
 
-    console.log(results)
-
     return (
         <Page title="Artists" description="" keywords="">
             <Container>

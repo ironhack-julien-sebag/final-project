@@ -12,6 +12,7 @@ import ProfilePicture from "./ProfilePicture"
 
 // Utils
 import convertDate from "../utils/ConvertDate"
+import scrollToTop from "../utils/ScrollToTop"
 
 // Styles
 const Container = styled.div`
@@ -77,10 +78,6 @@ const TextInfo = styled.span`
 `
 
 function Card({ artist }) {
-    function scrollToTop() {
-        window.scrollTo(0, 0)
-    }
-
     return (
         <Container>
             <Link to={`/artists/${artist._id}`} onClick={scrollToTop}>
