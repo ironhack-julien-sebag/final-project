@@ -44,27 +44,29 @@ function ArtistDetail(props) {
     const [message, setMessage] = useState("")
     const [date, setDate] = useState("")
 
-    const [sender, setSender] = useState(user._id)
+    // const [sender, setSender] = useState("")
+    const [sender] = useState(user._id)
     const [receiver] = useState(props.artist._id)
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const handleMessage = e => setMessage(e.target.value)
     const handleDate = e => setDate(e.target.value.toLocaleString())
 
-    // isLoggedIn && setSender(user._id)
-    
+    // if (isLoggedIn) {
+    //     setSender(user._id)
+    // }
 
     const handleSubmit = e => {
         e.preventDefault()
         const requestBody = { message, date, sender, receiver }
         axios
-            .post(`${API_URL}/api/messaging/send-message`, requestBody)
+            .put(`${API_URL}/api/send-message`, requestBody)
             .then(res => {
                 // console.log(res)
                 navigate("/my-account")
             })
             .catch(err => {
-                const errorDescription = err.response.data.message
+                const errorDescription = err.response
                 setErrorMessage(errorDescription)
             })
     }
@@ -77,16 +79,6 @@ function ArtistDetail(props) {
                         src={props.artist.imageUrl}
                         alt={props.artist.fullName}
                     />
-
-                    {/* {isLoggedIn && user.role === "artist" && (
-                        <Button
-                            to={`/artists/${props.artist._id}/edit`}
-                            primary
-                            justify="center"
-                        >
-                            Edit
-                        </Button>
-                    )} */}
                 </Aside>
 
                 <ArtistContainer>

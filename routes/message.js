@@ -3,7 +3,7 @@ const Message = require("../models/Message.model")
 
 const APP_URL = "http://localhost:3000/"
 
-router.post("/send-message", (req, res, next) => {
+router.put("/send-message", (req, res, next) => {
     const { sender, receiver, date, message } = req.body
 
     if (message === "") {
@@ -11,7 +11,7 @@ router.post("/send-message", (req, res, next) => {
     }
 
     Message.create({ sender, receiver, date, message })
-        .then(createdMessage => res.redirect(`${APP_URL}/my-account`))
+        .then(createdMessage => res.status(200).json(createdMessage))
         .catch(err => {
             console.log(err)
             res.status(500).json({ message: "Internal server error" })

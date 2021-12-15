@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const User = require("../models/User.model")
+const jwt = require("jsonwebtoken")
 
 const { isAuthenticated } = require("../middleware/jwt.middleware")
 
@@ -22,12 +23,28 @@ router.get("/users", (req, res, next) => {
 router.put("/edit-user", (req, res, next) => {
     // const id = req.params.id
     const { fullName, city, email, id } = req.body
+
     
+
     // console.log(req.body)
-    
+
     User.findByIdAndUpdate(id, { fullName, city, email }, { new: true })
         .then(updatedUser => {
             // console.log(updatedUser)
+            const payload = {
+                fullName,
+                email,
+                city,
+                id,
+            }
+
+            const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+                algorithm: "HS256",
+                expiresIn: "6h",
+            })
+
+            res.status(200).json({ authToken: authToken })
+            
             res.status(200).json(updatedUser)
         })
         .catch(err => console.log(err))

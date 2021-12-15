@@ -17,7 +17,7 @@ import DangerZone from "../../components/forms/DangerZone"
 const API_URL = "http://localhost:5005"
 
 function EditAccount() {
-    const { user, setUser } = useContext(AuthContext)
+    const { user, setUser, logInUser } = useContext(AuthContext)
     const navigate = useNavigate()
 
     const [fullName, setFullName] = useState(user.fullName)
@@ -38,8 +38,9 @@ function EditAccount() {
         axios
             .put(`/api/edit-user`, requestBody)
             .then(res => {
+                const token = res.data.token                
+                logInUser(token)
                 setUser(res.data)
-                console.log(res.data)
                 navigate("/my-account")
             })
             .catch(err => {

@@ -10,6 +10,8 @@ import Container, { Aside, Content } from "../../components/layouts/Container"
 import ProfilePicture from "../../components/artists/ProfilePicture"
 import Button from "../../components/ui/Button"
 
+import MessagesContainer from "../../components/messages/MessagesContainer"
+
 function AccountUser() {
     const user = useContext(AuthContext).user
 
@@ -19,13 +21,17 @@ function AccountUser() {
 
     useEffect(() => {
         axios
-            .get("/api/messaging/all-messages")
+            .get("/api/all-messages")
             .then(res => {
                 setMessagesList(res.data)
                 setIsLoading(false)
             })
             .catch(err => console.log(err))
     }, [])
+
+    if (messagesList.length > 0) {
+        console.log(messagesList)
+    }
 
     return (
         <Page title="User" description="" keywords="">
@@ -54,14 +60,7 @@ function AccountUser() {
                     {isLoading ? (
                         <Font.P>Loading</Font.P>
                     ) : (
-                        <div>
-                            {messagesList.map(message =>
-                                message.sender._id === user._id ||
-                                message.receiver._id === user._id
-                                    ? message.message
-                                    : ""
-                            )}
-                        </div>
+                        messagesList.length > 0 && <p></p>
                     )}
                 </Content>
             </Container>
@@ -70,3 +69,12 @@ function AccountUser() {
 }
 
 export default AccountUser
+
+//  <div>
+//                             {messagesList.map(message =>
+//                                 message.sender._id === user._id ||
+//                                 message.receiver._id === user._id
+//                                     ? message.message
+//                                     : ""
+//                             )}
+//                         </div>

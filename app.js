@@ -25,7 +25,7 @@ const userRouter = require("./routes/user")
 app.use("/api", userRouter)
 
 const messageRouter = require("./routes/message")
-app.use("/api/messaging", messageRouter)
+app.use("/api", messageRouter)
 
 const authRouter = require("./routes/auth")
 app.use("/auth", authRouter)
