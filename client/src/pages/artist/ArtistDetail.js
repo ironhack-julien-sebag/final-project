@@ -78,8 +78,16 @@ function ArtistDetail(props) {
     // }
 
     const handleSend = e => {
-        const requestBody = { sender: user.email, receiver: props.artist.email, date, message }
-        axios.post("/api/contact", requestBody)
+        const requestBody = {
+            sender: user.email,
+            receiver: props.artist.email,
+            date,
+            message,
+        }
+        axios
+            .post("/api/contact", requestBody)
+            .then(() => navigate("/my-account"))
+            .catch(err => console.log(err))
     }
 
     return (
