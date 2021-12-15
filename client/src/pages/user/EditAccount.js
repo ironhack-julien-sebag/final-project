@@ -16,20 +16,20 @@ import DangerZone from "../../components/forms/DangerZone"
 // const API_URL = "http://localhost:5005"
 
 function EditAccount() {
-    const { user, setUser, setToken } = useContext(AuthContext)
-    
+    const { user, setUser, setToken, logoutUser } = useContext(AuthContext)
+
     const navigate = useNavigate()
-    
+
     const [fullName, setFullName] = useState(user.fullName)
     const [email, setEmail] = useState(user.email)
     const [city, setCity] = useState(user.city)
     const [errorMessage, setErrorMessage] = useState(undefined)
     // const [avatar, setAvatar] = useState(user.imageUrl)
-    
+
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
     const handleCity = e => setCity(e.target.value)
-    
+
     const handleSubmit = e => {
         e.preventDefault()
         const requestBody = { fullName, email, city, id: user._id }
@@ -37,76 +37,84 @@ function EditAccount() {
             .put(`/api/edit-user`, requestBody)
             .then(res => {
                 const { token, user } = res.data
-                // logInUser(token)
-                console.log(res.data)
+
                 setUser(user)
                 setToken(token)
                 navigate("/my-account")
             })
             .catch(err => {
-                const errorDescription = err.response.data.message
-                setErrorMessage(errorDescription)
                 console.log(err)
             })
     }
-    
+
+    // Delete
+    const handleDelete = () => {
+        axios
+            .delete(`/api/delete/${user._id}`)
+            .then(() => {
+                navigate("/")
+                logoutUser()
+                // logoutUser()
+            })
+            .catch(err => console.log(err))
+    }
+
     return (
         <Page title="Edit your account" description="" keywords="">
-            <form onSubmit={handleSubmit}>
-                <Container>
-                    <Aside>
-                        <ProfilePicture
-                            edit
-                            src={user.imageUrl}
-                            alt={user.fullName}
+            <Container>
+                <Aside>
+                    <ProfilePicture
+                        edit
+                        src={user.imageUrl}
+                        alt={user.fullName}
+                    />
+                    {/* <Button primary justify="center" type="submit">
+                        Save
+                    </Button> */}
+                </Aside>
+
+                <Content large>
+                    <Font.H1>Edit your account</Font.H1>
+
+                    <Form onSubmit={handleSubmit} btnPrimary="Save">
+                        <Input
+                            label="Your name"
+                            name="fullName"
+                            id="fullName"
+                            value={fullName}
+                            onChange={handleFullName}
                         />
-                        <Button primary justify="center" type="submit">
-                            Save
-                        </Button>
-                    </Aside>
 
-                    <Content large>
-                        <Font.H1>Edit your account</Font.H1>
-                        
-                        <Form container>
-                            <Input
-                                label="Your name"
-                                name="fullName"
-                                id="fullName"
-                                value={fullName}
-                                onChange={handleFullName}
-                            />
-                            
-                            <Input
-                                label="Your email"
-                                name="email"
-                                id="email"
-                                type="email"
-                                value={email}
-                                onChange={handleEmail}
-                                disabled
-                            />
-                            
-                            <Input
-                                label="Your city"
-                                name="city"
-                                id="city"
-                                value={city}
-                                onChange={handleCity}
-                            />
-                            
-                            <Font.P>
-                                <Link to="/my-account/edit/edit-password">
-                                    Change your password
-                                </Link>
-                            </Font.P>
+                        <Input
+                            label="Your email"
+                            name="email"
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={handleEmail}
+                            disabled
+                        />
 
-                            {errorMessage && <Font.P>{errorMessage}</Font.P>}
-                        </Form>
-                        <DangerZone />
-                    </Content>
-                </Container>
-            </form>
+                        <Input
+                            label="Your city"
+                            name="city"
+                            id="city"
+                            value={city}
+                            onChange={handleCity}
+                        />
+
+                        <Font.P>
+                            <Link to="/my-account/edit/edit-password">
+                                Change your password
+                            </Link>
+                        </Font.P>
+
+                        {errorMessage && <Font.P>{errorMessage}</Font.P>}
+                    </Form>
+
+                    <DangerZone delete={handleDelete} />
+                </Content>
+            </Container>
         </Page>
     )
 }

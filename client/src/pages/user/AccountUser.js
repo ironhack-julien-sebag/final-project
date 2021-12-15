@@ -29,10 +29,6 @@ function AccountUser() {
             .catch(err => console.log(err))
     }, [])
 
-    if (messagesList.length > 0) {
-        console.log(messagesList)
-    }
-
     return (
         <Page title="User" description="" keywords="">
             <Container>

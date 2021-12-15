@@ -1,5 +1,5 @@
 // Imports
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { v4 as uuid } from "uuid"
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
@@ -42,27 +42,33 @@ function ArtistDetail(props) {
 
     // Messages
     const [message, setMessage] = useState("")
-    const [date, setDate] = useState("")
+    const [date, setDate] = useState(getToday())
 
-    // const [sender, setSender] = useState("")
-    const [sender] = useState(user._id)
+    const [sender, setSender] = useState("")
+    // const [sender] = useState(user._id)
     const [receiver] = useState(props.artist._id)
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const handleMessage = e => setMessage(e.target.value)
     const handleDate = e => setDate(e.target.value.toLocaleString())
 
-    // if (isLoggedIn) {
-    //     setSender(user._id)
-    // }
+    useEffect(() => {
+        if (isLoggedIn) {
+            setSender(user._id)
+        }
+    }, [])
 
     const handleSubmit = e => {
         e.preventDefault()
-        const requestBody = { message, artist: props.artist._id, user: user._id }
+        const requestBody = {
+            message,
+            receiver: props.artist._id,
+            sender: user._id,
+            date,
+        }
         axios
             .put(`${API_URL}/api/send-message`, requestBody)
             .then(res => {
-                // console.log(res)
                 navigate("/my-account")
             })
             .catch(err => {
@@ -70,8 +76,6 @@ function ArtistDetail(props) {
                 setErrorMessage(errorDescription)
             })
     }
-
-    console.log(sender, receiver)
 
     return (
         <Page title={props.artist.fullName} description="" keywords="">
@@ -152,31 +156,18 @@ function ArtistDetail(props) {
                         ""
                     )} */}
                     <Form btnPrimary="Send" onSubmit={handleSubmit}>
-                        <Input
-                            type="hidden"
-                            name="user"
-                            id="user"
-                            value={sender}
-                            hidden
-                        />
+                   
 
                         <Input
-                            type="hidden"
-                            name="artist"
-                            id="artist"
-                            value={receiver}
-                            hidden
-                        />
-
-                        {/* <Input
                             label="Enquiry for"
                             type="date"
-                            name="dateFor"
-                            id="dateFor"
+                            name="date"
+                            id="date"
                             min={getToday()}
-                            defaultValue={getToday()}
+                            value={date}
+                            // defaultValue={}
                             onChange={handleDate}
-                        /> */}
+                        />
 
                         <Textarea
                             label="Your message"
@@ -185,6 +176,8 @@ function ArtistDetail(props) {
                             onChange={handleMessage}
                         />
                     </Form>
+
+                    {errorMessage && <Font.P>{errorMessage}</Font.P>}
                 </ArtistContainer>
 
                 <Aside>

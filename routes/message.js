@@ -5,40 +5,40 @@ const Conversation = require("../models/Conversation.model")
 const APP_URL = "http://localhost:3000/"
 
 router.put("/send-message", (req, res, next) => {
-    // const { sender, receiver, date, message } = req.body
-    const { user, artist, message } = req.body
+    const { sender, receiver, date, message } = req.body
+    // const { user, artist, message, date } = req.body
     const id = req.params.id
 
     if (message === "") {
         res.status(400).json({ errorMessage: "Provide a message" })
     }
 
-    Conversation.findOne({ user, artist }).then(foundConversation => {
-        if (user === user && artist === artist) {
-            Conversation.findByIdAndUpdate(id, { message }).then(newMessage => {
-                res.status(200).json(newMessage)
-            })
-        } else {
-            Conversation.create({ user, artist, message })
-                .then(createdConversation => {
-                    res.status(200).json(createdConversation)
-                })
-                .catch(err => {
-                    res.status(500).json({ message: "Internal server error" })
-                })
-        }
-        // console.log(`User: ${user}, Artist: ${artist}`)
+    // Conversation.findOne({ user, artist }).then(foundConversation => {
+    //     if (user === user && artist === artist) {
+    //         Conversation.findByIdAndUpdate(id, { message }).then(newMessage => {
+    //             res.status(200).json(newMessage)
+    //         })
+    //     } else {
+    //         Conversation.create({ user, artist, message, date })
+    //             .then(createdConversation => {
+    //                 res.status(200).json(createdConversation)
+    //             })
+    //             .catch(err => {
+    //                 res.status(500).json({ message: "Internal server error" })
+    //             })
+    //     }
+    //     // console.log(`User: ${user}, Artist: ${artist}`)
         
-    })
+    // })
 
-    // Message.create({ sender, receiver, date, message })
-    //     .then(createdMessage => {
-    //         res.status(200).json(createdMessage)
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //         res.status(500).json({ message: "Internal server error" })
-    //     })
+    Message.create({ sender, receiver, date, message })
+        .then(createdMessage => {
+            res.status(200).json(createdMessage)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json({ message: "Internal server error" })
+        })
 
     // if()
 

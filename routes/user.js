@@ -42,4 +42,12 @@ router.put("/edit-user", (req, res, next) => {
         .catch(err => console.log(err))
 })
 
+router.delete("/delete/:id", (req, res, next) => {
+    const id = req.params.id
+
+    User.findByIdAndDelete(id).then(() => {
+        res.status(200).json({ message: "User deleted" })
+    })
+})
+
 module.exports = router

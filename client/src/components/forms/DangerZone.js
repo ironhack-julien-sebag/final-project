@@ -14,7 +14,7 @@ const OpenButton = styled(Font.P)``
 
 const ButtonsContainer = styled.div``
 
-function DangerZone() {
+function DangerZone(props) {
     const [open, setOpen] = useState(false)
     const Open = open ? "open" : ""
 
@@ -28,7 +28,7 @@ function DangerZone() {
                 <Font.P>Are you sure you want to delete your account?</Font.P>
 
                 <ButtonsContainer>
-                    <Button danger>Yes delete my account</Button>
+                    <Button danger onClick={props.delete}>Yes delete my account</Button>
                     <Button>No, cancel</Button>
                 </ButtonsContainer>
             </Container>
