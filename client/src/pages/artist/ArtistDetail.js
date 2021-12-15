@@ -58,7 +58,7 @@ function ArtistDetail(props) {
 
     const handleSubmit = e => {
         e.preventDefault()
-        const requestBody = { message, date, sender, receiver }
+        const requestBody = { message, artist: props.artist._id, user: user._id }
         axios
             .put(`${API_URL}/api/send-message`, requestBody)
             .then(res => {
@@ -70,6 +70,8 @@ function ArtistDetail(props) {
                 setErrorMessage(errorDescription)
             })
     }
+
+    console.log(sender, receiver)
 
     return (
         <Page title={props.artist.fullName} description="" keywords="">
@@ -100,7 +102,7 @@ function ArtistDetail(props) {
                         </>
                     )}
 
-                    {!isLoggedIn ? (
+                    {/* {!isLoggedIn ? (
                         <Font.P>
                             Please <Link to="/login">log in</Link> to contact{" "}
                             {props.artist.fullName}
@@ -148,7 +150,41 @@ function ArtistDetail(props) {
                         </>
                     ) : (
                         ""
-                    )}
+                    )} */}
+                    <Form btnPrimary="Send" onSubmit={handleSubmit}>
+                        <Input
+                            type="hidden"
+                            name="user"
+                            id="user"
+                            value={sender}
+                            hidden
+                        />
+
+                        <Input
+                            type="hidden"
+                            name="artist"
+                            id="artist"
+                            value={receiver}
+                            hidden
+                        />
+
+                        {/* <Input
+                            label="Enquiry for"
+                            type="date"
+                            name="dateFor"
+                            id="dateFor"
+                            min={getToday()}
+                            defaultValue={getToday()}
+                            onChange={handleDate}
+                        /> */}
+
+                        <Textarea
+                            label="Your message"
+                            name="message"
+                            id="message"
+                            onChange={handleMessage}
+                        />
+                    </Form>
                 </ArtistContainer>
 
                 <Aside>

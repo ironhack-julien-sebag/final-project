@@ -21,16 +21,10 @@ router.get("/users", (req, res, next) => {
 })
 
 router.put("/edit-user", (req, res, next) => {
-    // const id = req.params.id
     const { fullName, city, email, id } = req.body
-
-    
-
-    // console.log(req.body)
 
     User.findByIdAndUpdate(id, { fullName, city, email }, { new: true })
         .then(updatedUser => {
-            // console.log(updatedUser)
             const payload = {
                 fullName,
                 email,
@@ -43,9 +37,7 @@ router.put("/edit-user", (req, res, next) => {
                 expiresIn: "6h",
             })
 
-            res.status(200).json({ authToken: authToken })
-            
-            res.status(200).json(updatedUser)
+            res.status(200).json({ token: authToken, user: updatedUser })
         })
         .catch(err => console.log(err))
 })

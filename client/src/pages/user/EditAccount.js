@@ -13,34 +13,34 @@ import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Button from "../../components/ui/Button"
 import DangerZone from "../../components/forms/DangerZone"
-
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function EditAccount() {
-    const { user, setUser, logInUser } = useContext(AuthContext)
+    const { user, setUser, setToken } = useContext(AuthContext)
+    
     const navigate = useNavigate()
-
+    
     const [fullName, setFullName] = useState(user.fullName)
     const [email, setEmail] = useState(user.email)
     const [city, setCity] = useState(user.city)
     const [errorMessage, setErrorMessage] = useState(undefined)
     // const [avatar, setAvatar] = useState(user.imageUrl)
-
+    
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
     const handleCity = e => setCity(e.target.value)
-
+    
     const handleSubmit = e => {
         e.preventDefault()
-
         const requestBody = { fullName, email, city, id: user._id }
-
         axios
             .put(`/api/edit-user`, requestBody)
             .then(res => {
-                const token = res.data.token                
-                logInUser(token)
-                setUser(res.data)
+                const { token, user } = res.data
+                // logInUser(token)
+                console.log(res.data)
+                setUser(user)
+                setToken(token)
                 navigate("/my-account")
             })
             .catch(err => {
@@ -49,7 +49,7 @@ function EditAccount() {
                 console.log(err)
             })
     }
-
+    
     return (
         <Page title="Edit your account" description="" keywords="">
             <form onSubmit={handleSubmit}>
@@ -60,7 +60,6 @@ function EditAccount() {
                             src={user.imageUrl}
                             alt={user.fullName}
                         />
-
                         <Button primary justify="center" type="submit">
                             Save
                         </Button>
@@ -68,7 +67,7 @@ function EditAccount() {
 
                     <Content large>
                         <Font.H1>Edit your account</Font.H1>
-
+                        
                         <Form container>
                             <Input
                                 label="Your name"
@@ -77,7 +76,7 @@ function EditAccount() {
                                 value={fullName}
                                 onChange={handleFullName}
                             />
-
+                            
                             <Input
                                 label="Your email"
                                 name="email"
@@ -87,6 +86,7 @@ function EditAccount() {
                                 onChange={handleEmail}
                                 disabled
                             />
+                            
                             <Input
                                 label="Your city"
                                 name="city"
@@ -94,7 +94,7 @@ function EditAccount() {
                                 value={city}
                                 onChange={handleCity}
                             />
-
+                            
                             <Font.P>
                                 <Link to="/my-account/edit/edit-password">
                                     Change your password
@@ -103,7 +103,6 @@ function EditAccount() {
 
                             {errorMessage && <Font.P>{errorMessage}</Font.P>}
                         </Form>
-
                         <DangerZone />
                     </Content>
                 </Container>
@@ -111,5 +110,4 @@ function EditAccount() {
         </Page>
     )
 }
-
 export default EditAccount
