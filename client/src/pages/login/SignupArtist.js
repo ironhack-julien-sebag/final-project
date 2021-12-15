@@ -1,8 +1,8 @@
-// Imports
-import React, { useState, useContext } from "react"
-// import styled from "styled-components"
-import { Link, useNavigate, Navigate } from "react-router-dom"
+// Packages
+import React, { useContext, useState } from "react"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import axios from "axios"
+import { v4 as uuid } from "uuid"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -11,30 +11,35 @@ import NavLogin from "../../components/forms/NavLogin"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
+import Select from "../../components/forms/Select"
 import * as Font from "../../components/styles/Font"
 import { AuthContext } from "../../context/auth"
 
+import SiteData from "../../components/data/SiteData"
+
 const API_URL = "http://localhost:5005"
 
-function Signup(props) {
+function SignupArtist() {
+    const { isLoggedIn } = useContext(AuthContext)
+
+    const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [fullName, setFullName] = useState("")
     const [city, setCity] = useState("")
-    const [errorMessage, setErrorMessage] = useState(undefined)
+    const [errorMessage, setErrorMessage] = useState("")
 
     const navigate = useNavigate()
 
+    const handlefullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
     const handlePassword = e => setPassword(e.target.value)
-    const handleFullName = e => setFullName(e.target.value)
     const handleCity = e => setCity(e.target.value)
 
     const handleSubmit = e => {
         e.preventDefault()
-        const requestBody = { email, password, fullName, city, role: "user" }
+        const requestBody = { email, password, fullName, city, role: "artist", price: 3000 }
         axios
-            .post(`${API_URL}/auth/signup`, requestBody)
+            .post(`${API_URL}/auth/signup-artist`, requestBody)
             .then(res => navigate("/login"))
             .catch(err => {
                 const errorDescription = err.response.data.message
@@ -42,78 +47,63 @@ function Signup(props) {
             })
     }
 
-    const { isLoggedIn } = useContext(AuthContext)
-
     return isLoggedIn ? (
         <Navigate to="/my-account" />
     ) : (
-        <Page title="Create your account" description="" keywords="">
+        <Page title="Sign up as artist">
             <Container>
                 <Aside />
-
                 <Content>
                     <NavLogin />
 
-                    <Form
-                        onSubmit={handleSubmit}
-                        btnPrimary="Create your account"
-                    >
-                        <Font.P>
-                            If you are a band or an artist who want to be
-                            registered on our website,{" "}
-                            <Link to="/signup/artist">
-                                use this form instead!
-                            </Link>
-                        </Font.P>
-
+                    <Form btnPrimary="Create your account" onSubmit={handleSubmit}>
                         <Input
-                            type="hidden"
-                            id="role"
-                            name="role"
-                            value="user"
-                        />
-
-                        <Input
-                            label="Full name"
+                            label="Your display name"
                             id="fullName"
                             name="fullName"
                             value={fullName}
-                            onChange={handleFullName}
+                            onChange={handlefullName}
                         />
 
                         <Input
-                            label="Email"
+                            label="Your email"
                             id="email"
                             name="email"
-                            type="email"
                             value={email}
                             onChange={handleEmail}
                         />
 
-                        <Input
-                            label="City"
-                            id="city"
-                            name="city"
+                        <Select
+                            label="Select your city"
                             value={city}
                             onChange={handleCity}
-                        />
+                        >
+                            {SiteData.Cities.map(city => (
+                                <option value={city} key={uuid()}>
+                                    {city}
+                                </option>
+                            ))}
+                        </Select>
 
                         <Password
-                            label="Password"
+                            label="Your password"
                             id="password"
                             name="password"
                             value={password}
                             onChange={handlePassword}
                         />
+
+                        <Input
+                            type="hidden"
+                            id="role"
+                            name="role"
+                            value="artist"
+                        />
                     </Form>
-
-                    {errorMessage && <Font.P>{errorMessage}</Font.P>}
                 </Content>
-
-                <Aside />
             </Container>
         </Page>
     )
 }
 
-export default Signup
+export default SignupArtist

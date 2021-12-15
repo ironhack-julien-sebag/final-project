@@ -11,6 +11,7 @@ import Home from "../pages/Home"
 import Login from "../pages/login/Login"
 import Signup from "../pages/login/Signup"
 import ForgotPassword from "../pages/login/ForgotPassword"
+import SignupArtist from "../pages/login/SignupArtist"
 
 // Artists
 import Artists from "../pages/artist/Artists"
@@ -46,6 +47,7 @@ function Switch() {
             {/* Login */}
             <Route path="/login" element={<Login />} preload={scrollToTop} />
             <Route path="/signup" element={<Signup />} preload={scrollToTop} />
+            <Route path="/signup/artist" element={<SignupArtist />} preload={scrollToTop} />
             <Route
                 path="/forgot-password"
                 element={<ForgotPassword />}

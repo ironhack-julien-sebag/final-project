@@ -51,6 +51,7 @@ const SelectInput = styled.select`
     cursor: pointer;
     z-index: 0;
     width: 100%;
+    font-size: ${Variables.FontSizes.Label};
 
     &::-ms-expand {
         display: none;

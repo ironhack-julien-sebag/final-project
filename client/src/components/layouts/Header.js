@@ -90,7 +90,14 @@ function Header(props) {
                         </LinkStyled>
                     </>
                 ) : (
-                    <LinkStyled to="/login" onClick={scrollToTop} className={location.pathname === "/signup" && "active"}>
+                    <LinkStyled
+                        to="/login"
+                        onClick={scrollToTop}
+                        className={
+                            location.pathname === "/signup" ||
+                            (location.pathname === "/signup/artist" && "active")
+                        }
+                    >
                         Log in
                     </LinkStyled>
                 )}

@@ -69,6 +69,60 @@ router.post("/signup", (req, res, next) => {
     })
 })
 
+router.post("/signup-artist", (req, res, next) => {
+    const { fullName, email, password, city, role, imageUrl, price } = req.body
+
+    if (fullName === "" || email === "" || password === "") {
+        res.status(400).json({ message: "Provide email, password and name" })
+        return
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+    if (!emailRegex.test(email)) {
+        res.status(400).json({ message: "Provide a valid email address." })
+        return
+    }
+
+    const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/
+    if (!passwordRegex.test(password)) {
+        res.status(400).json({
+            message:
+                "Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.",
+        })
+        return
+    }
+
+    User.findOne({ email }).then(foundUser => {
+        if (foundUser) {
+            res.status(400).json({ message: "User already exists." })
+            return
+        }
+
+        const salt = bcrypt.genSaltSync(saltRounds)
+        const hashedPassword = bcrypt.hashSync(password, salt)
+
+        return User.create({
+            fullName,
+            email,
+            password: hashedPassword,
+            city,
+            role: "artist",
+            imageUrl: randomAvatar(),
+            price: 3000,
+        })
+            .then(createdUser => {
+                const { fullName, email, _id, city, role, imageUrl, price } =
+                    createdUser
+                const user = { fullName, email, _id, city, role, imageUrl, price }
+                res.status(201).json({ user: user })
+            })
+            .catch(err => {
+                console.log(err)
+                res.status(500).json({ message: "Internal server error" })
+            })
+    })
+})
+
 router.post("/login", (req, res, next) => {
     const { email, password } = req.body
 
