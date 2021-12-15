@@ -40,12 +40,11 @@ const SelectContainer = styled.div`
 `
 
 const SelectInput = styled.select`
-    border: 1px solid ${Variables.Colors.LightGray};
+    border: 1px solid ${Variables.ThemeColors.LightGray};
     border-radius: ${Variables.Radiuses.S};
     padding: ${Variables.Margins.XXS} ${Variables.Margins.XS};
     font-family: ${Variables.FontFamilies.Body};
     font-size: ${Variables.FontSizes.Label};
-    color: ${Variables.Colors.Black};
     outline: none;
     position: relative;
     appearance: none;
@@ -63,7 +62,7 @@ const SelectInput = styled.select`
 
     &:disabled {
         border: 1px solid transparent;
-        background-color: ${Variables.Colors.LightGray};
+        background-color: ${Variables.ThemeColors.LightGray};
         cursor: not-allowed;
     }
 `

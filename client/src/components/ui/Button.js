@@ -11,8 +11,16 @@ import * as Variables from "../styles/Variables"
 const Container = styled.button`
     border: none;
     padding: ${Variables.Margins.XS} ${Variables.Margins.S};
-    background: ${props => (props.primary ? Variables.ThemeColors.Primary : "none")};
-    color: ${props => props.primary ? Variables.Colors.White : Variables.ThemeColors.Primary};
+    background: ${props =>
+        props.primary
+            ? Variables.ThemeColors.Primary
+            : props.danger
+            ? Variables.ThemeColors.Danger
+            : "none"};
+    color: ${props =>
+        props.primary || props.danger
+            ? Variables.ThemeColors.BackgroundColor
+            : Variables.ThemeColors.Primary};
     text-decoration: none;
     transition: ${Variables.Transitions.Short};
     border-radius: ${Variables.Radiuses.S};
@@ -20,17 +28,22 @@ const Container = styled.button`
     font-size: ${Variables.FontSizes.Body};
 
     &:hover {
-        background-color: ${props => props.primary ? Variables.ThemeColors.Primary70 : "none"};
+        background-color: ${props =>
+            props.primary ? Variables.ThemeColors.Primary70 : props.danger ? Variables.ThemeColors.Danger : "none"};
         color: ${props => !props.primary && Variables.ThemeColors.Primary70};
     }
 
-    ${props => props.justify && css`
-        justify-self: ${props => props.justify};
-    `}
+    ${props =>
+        props.justify &&
+        css`
+            justify-self: ${props => props.justify};
+        `}
 
-    ${props => props.large && css`
-        font-size: ${Variables.FontSizes.TitleMedium};
-    `}
+    ${props =>
+        props.large &&
+        css`
+            font-size: ${Variables.FontSizes.TitleMedium};
+        `}
 `
 
 function Button(props) {

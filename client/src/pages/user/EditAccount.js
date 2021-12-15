@@ -1,40 +1,57 @@
 // Imports
-import React, { useContext } from "react"
-// import styled from "styled-components"
-import { Link } from "react-router-dom"
+import React, { useContext, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "../../context/auth"
-// import { useParams, useNavigate } from "react-router-dom"
+import axios from "axios"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
-// import * as Variables from "../components/styles/Variables"
 import Container, { Aside, Content } from "../../components/layouts/Container"
 import ProfilePicture from "../../components/artists/ProfilePicture"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Button from "../../components/ui/Button"
+import DangerZone from "../../components/forms/DangerZone"
+
+const API_URL = "http://localhost:5005"
 
 function EditAccount() {
-    const user = useContext(AuthContext).user
+    const { user, setUser } = useContext(AuthContext)
+    const navigate = useNavigate()
 
-    // const [fullName, setFullName] = useState(user.fullName)
-    // const [email, setEmail] = useState(user.email)
-    // const [address, setAddress] = useState(user.address)
+    const [fullName, setFullName] = useState(user.fullName)
+    const [email, setEmail] = useState(user.email)
+    const [city, setCity] = useState(user.city)
+    const [errorMessage, setErrorMessage] = useState(undefined)
     // const [avatar, setAvatar] = useState(user.imageUrl)
 
-    // const handleFullName = e => setFullName(e.target.value)
-    // const handleEmail = e => setEmail(e.target.value)
-    // const handleAddress = e => setAddress(e.target.value)
-    
-    // const handleSubmit = e => {
-    //     e.preventDefault()
-        
-    // }
+    const handleFullName = e => setFullName(e.target.value)
+    const handleEmail = e => setEmail(e.target.value)
+    const handleCity = e => setCity(e.target.value)
+
+    const handleSubmit = e => {
+        e.preventDefault()
+
+        const requestBody = { fullName, email, city, id: user._id }
+
+        axios
+            .put(`/api/edit-user`, requestBody)
+            .then(res => {
+                setUser(res.data)
+                console.log(res.data)
+                navigate("/my-account")
+            })
+            .catch(err => {
+                const errorDescription = err.response.data.message
+                setErrorMessage(errorDescription)
+                console.log(err)
+            })
+    }
 
     return (
         <Page title="Edit your account" description="" keywords="">
-            <form>
+            <form onSubmit={handleSubmit}>
                 <Container>
                     <Aside>
                         <ProfilePicture
@@ -43,7 +60,7 @@ function EditAccount() {
                             alt={user.fullName}
                         />
 
-                        <Button primary justify="center">
+                        <Button primary justify="center" type="submit">
                             Save
                         </Button>
                     </Aside>
@@ -56,22 +73,25 @@ function EditAccount() {
                                 label="Your name"
                                 name="fullName"
                                 id="fullName"
-                                defaultValue={user.fullName}
+                                value={fullName}
+                                onChange={handleFullName}
                             />
-                            {/* <input onChange={e => handleFullName(e)} defaultValue={user.fullName} /> */}
+
                             <Input
                                 label="Your email"
                                 name="email"
-                                id="emailEdit"
+                                id="email"
                                 type="email"
-                                value={user.email}
+                                value={email}
+                                onChange={handleEmail}
                                 disabled
                             />
                             <Input
                                 label="Your city"
                                 name="city"
                                 id="city"
-                                defaultValue={user.city}
+                                value={city}
+                                onChange={handleCity}
                             />
 
                             <Font.P>
@@ -79,7 +99,11 @@ function EditAccount() {
                                     Change your password
                                 </Link>
                             </Font.P>
+
+                            {errorMessage && <Font.P>{errorMessage}</Font.P>}
                         </Form>
+
+                        <DangerZone />
                     </Content>
                 </Container>
             </form>

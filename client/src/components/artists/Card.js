@@ -21,12 +21,6 @@ const Container = styled.div`
     gap: ${Variables.Margins.M};
 `
 
-// const Image = styled.img`
-//     aspect-ratio: 1;
-//     border-radius: 50%;
-//     object-fit: cover;
-// `
-
 const Content = styled.span`
     display: grid;
     grid-template-columns: 1fr;

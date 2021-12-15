@@ -15,7 +15,7 @@ const Button = styled.button`
     display: inline-flex;
     align-items: center;
     position: relative;
-    color: ${Variables.Colors.White};
+    color: ${Variables.ThemeColors.White};
     font-weight: ${Variables.FontWeights.Regular};
     text-decoration: none;
 
@@ -47,7 +47,7 @@ const Button = styled.button`
         margin-right: ${Variables.Margins.XS};
     }
 
-    color: ${Variables.Colors.White};
+    color: ${Variables.ThemeColors.White};
     font-weight: ${Variables.FontWeights.Regular};
     text-decoration: none;
     position: relative;

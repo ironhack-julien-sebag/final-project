@@ -1,6 +1,6 @@
 // Packages
 import React, { useContext } from "react"
-import { NavLink as Link } from "react-router-dom"
+import { NavLink as Link, useLocation } from "react-router-dom"
 import styled from "styled-components"
 
 // Components
@@ -33,7 +33,7 @@ const Nav = styled.nav`
 `
 
 const LinkStyled = styled(Link)`
-    color: ${Variables.Colors.White};
+    color: ${Variables.ThemeColors.White};
     font-weight: ${Variables.FontWeights.Regular};
     text-decoration: none;
     position: relative;
@@ -69,6 +69,7 @@ const LinkStyled = styled(Link)`
 
 function Header(props) {
     const { isLoggedIn, logoutUser } = useContext(AuthContext)
+    const location = useLocation()
 
     return (
         <Container>
@@ -89,7 +90,7 @@ function Header(props) {
                         </LinkStyled>
                     </>
                 ) : (
-                    <LinkStyled to="/login" onClick={scrollToTop}>
+                    <LinkStyled to="/login" onClick={scrollToTop} className={location.pathname === "/signup" && "active"}>
                         Log in
                     </LinkStyled>
                 )}

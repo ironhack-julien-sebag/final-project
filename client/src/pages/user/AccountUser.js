@@ -27,16 +27,14 @@ function AccountUser() {
             .catch(err => console.log(err))
     }, [])
 
-    console.log(messagesList)
-
     return (
-        <Page title={user.fullName} description="" keywords="">
+        <Page title="User" description="" keywords="">
             <Container>
                 <Aside>
                     <ProfilePicture src={user.imageUrl} alt={user.fullName} />
-                    {/* <Button to="/my-account/edit" primary justify="center">
+                    <Button to="/my-account/edit" primary justify="center">
                         Edit your account
-                    </Button> */}
+                    </Button>
                     {user.role === "artist" && (
                         <Button
                             primary

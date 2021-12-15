@@ -32,7 +32,7 @@ const IconContainer = styled.span`
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: ${Variables.Colors.LightGray};
+    background-color: ${Variables.ThemeColors.LightGray};
     display: flex;
     align-items: center;
     justify-content: center;

@@ -44,12 +44,15 @@ function ArtistDetail(props) {
     const [message, setMessage] = useState("")
     const [date, setDate] = useState("")
 
-    const [sender] = useState(user._id)
+    const [sender, setSender] = useState(user._id)
     const [receiver] = useState(props.artist._id)
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const handleMessage = e => setMessage(e.target.value)
     const handleDate = e => setDate(e.target.value.toLocaleString())
+
+    // isLoggedIn && setSender(user._id)
+    
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -57,7 +60,7 @@ function ArtistDetail(props) {
         axios
             .post(`${API_URL}/api/messaging/send-message`, requestBody)
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 navigate("/my-account")
             })
             .catch(err => {
@@ -105,7 +108,12 @@ function ArtistDetail(props) {
                         </>
                     )}
 
-                    {isLoggedIn && user._id !== props.artist._id ? (
+                    {!isLoggedIn ? (
+                        <Font.P>
+                            Please <Link to="/login">log in</Link> to contact{" "}
+                            {props.artist.fullName}
+                        </Font.P>
+                    ) : isLoggedIn && user._id !== props.artist._id ? (
                         <>
                             <Font.H3>Contact {props.artist.fullName}</Font.H3>
 
@@ -146,11 +154,6 @@ function ArtistDetail(props) {
 
                             {errorMessage && <Font.P>{errorMessage}</Font.P>}
                         </>
-                    ) : !isLoggedIn ? (
-                        <Font.P>
-                            Please <Link to="/login">log in</Link> to contact{" "}
-                            {props.artist.fullName}
-                        </Font.P>
                     ) : (
                         ""
                     )}

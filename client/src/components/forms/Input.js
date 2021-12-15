@@ -21,12 +21,13 @@ const Container = styled.div`
 `
 
 const InputStyled = styled.input`
-    border: 1px solid ${Variables.Colors.LightGray};
+    border: 1px solid ${Variables.ThemeColors.LightGray};
     border-radius: ${Variables.Radiuses.S};
     padding: ${Variables.Margins.XXS} ${Variables.Margins.XS};
     font-family: ${Variables.FontFamilies.Body};
     font-size: ${Variables.FontSizes.Label};
-    color: ${Variables.Colors.Black};
+    color: ${Variables.ThemeColors.FontColor};
+    background-color: ${Variables.ThemeColors.BackgroundColor};
     outline: none;
 
     &:focus {
@@ -35,7 +36,7 @@ const InputStyled = styled.input`
 
     &:disabled {
         border: 1px solid transparent;
-        background-color: ${Variables.Colors.LightGray};
+        background-color: ${Variables.ThemeColors.LightGray};
         cursor: not-allowed;
     }
 

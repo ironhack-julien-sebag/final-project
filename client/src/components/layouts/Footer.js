@@ -23,10 +23,6 @@ const Container = styled.footer`
     gap: ${Variables.Margins.L};
     background-color: ${Variables.ThemeColors.FooterBackground};
     padding: ${Variables.Margins.L} 5vw;
-
-    p a {
-        color: ${Variables.Colors.Black}
-    }
 `
 
 const Col = styled.div`

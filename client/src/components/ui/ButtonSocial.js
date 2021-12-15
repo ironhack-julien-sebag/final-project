@@ -17,11 +17,11 @@ const Container = styled.a`
     border-radius: ${Variables.Radiuses.M};
     background: ${props =>
         props.color === "facebook"
-            ? Variables.Colors.Facebook
+            ? Variables.ThemeColors.Facebook
             : props.color === "youtube"
-            ? Variables.Colors.Youtube
+            ? Variables.ThemeColors.Youtube
             : props.color === "instagram"
-            ? Variables.Colors.Instagram
+            ? Variables.ThemeColors.Instagram
             : ""};
 `
 
@@ -33,7 +33,7 @@ function ButtonSocial(props) {
             rel="noreferrer noopener"
             color={props.type}
         >
-            <Icon name={props.type} size={32} color={Variables.Colors.White} />
+            <Icon name={props.type} size={32} color={Variables.ThemeColors.White} />
         </Container>
     )
 }

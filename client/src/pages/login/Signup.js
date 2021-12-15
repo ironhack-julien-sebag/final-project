@@ -20,7 +20,7 @@ function Signup(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [fullName, setFullName] = useState("")
-    const [address, setAddress] = useState("")
+    const [city, setCity] = useState("")
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const navigate = useNavigate()
@@ -28,11 +28,11 @@ function Signup(props) {
     const handleEmail = e => setEmail(e.target.value)
     const handlePassword = e => setPassword(e.target.value)
     const handleFullName = e => setFullName(e.target.value)
-    const handleAddress = e => setAddress(e.target.value)
+    const handleCity = e => setCity(e.target.value)
 
     const handleSubmit = e => {
         e.preventDefault()
-        const requestBody = { email, password, fullName, address }
+        const requestBody = { email, password, fullName, city }
         axios
             .post(`${API_URL}/auth/signup`, requestBody)
             .then(res => navigate("/login"))
@@ -89,11 +89,11 @@ function Signup(props) {
                         />
 
                         <Input
-                            label="Address"
-                            id="address"
-                            name="address"
-                            value={address}
-                            onChange={handleAddress}
+                            label="City"
+                            id="city"
+                            name="city"
+                            value={city}
+                            onChange={handleCity}
                         />
 
                         <Password

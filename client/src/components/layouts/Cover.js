@@ -19,7 +19,7 @@ const Container = styled.div`
     ${props =>
         props.overlay &&
         css`
-            color: ${Variables.Colors.White};
+            color: ${Variables.ThemeColors.White};
             
             &:before {
                 content: "";

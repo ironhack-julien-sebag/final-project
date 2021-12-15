@@ -50,7 +50,7 @@ export const P = styled.p`
     font-weight: ${Variables.FontWeights.Regular};
 
     a {
-        color: ${Variables.ThemeColors.Primary} !important;
+        color: ${Variables.ThemeColors.Primary};
         font-weight: ${Variables.FontWeights.Bold};
         text-decoration: none;
         transition: ${Variables.Transitions.Short};
@@ -81,7 +81,7 @@ export const Em = styled.em`
 export const Label = styled.label`
     font-size: ${Variables.FontSizes.Label};
     font-weight: ${props => props.weight || Variables.FontWeights.Regular};
-    color: ${props => props.color || Variables.Colors.Black};
+    color: ${props => props.color || Variables.ThemeColors.FontColor};
     font-size: ${props =>
         props.big ? Variables.FontSizes.Body : Variables.FontWeights.Label};
 `

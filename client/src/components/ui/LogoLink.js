@@ -13,10 +13,10 @@ const Img = styled(Logo)`
     height: var(--size);
 `
 
-function LogoLink({ color }) {
+function LogoLink({ colorLogo }) {
     return (
         <Link to="/">
-            <Img color={color} />
+            <Img colorLogo={colorLogo} />
         </Link>
     )
 }
