@@ -15,6 +15,8 @@ import Button from "../../components/ui/Button"
 import DangerZone from "../../components/forms/DangerZone"
 // const API_URL = "http://localhost:5005"
 
+import service from "../../api/service"
+
 function EditAccount() {
     const { user, setUser, setToken, logoutUser } = useContext(AuthContext)
 
@@ -25,10 +27,12 @@ function EditAccount() {
     const [city, setCity] = useState(user.city)
     const [errorMessage, setErrorMessage] = useState(undefined)
     // const [avatar, setAvatar] = useState(user.imageUrl)
+    // const [imageUrl, setImageUrl] = useState(user.imageUrl)
 
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
     const handleCity = e => setCity(e.target.value)
+    // const handleImage = e => setImageUrl(e.target.value)
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -47,6 +51,17 @@ function EditAccount() {
             })
     }
 
+    // const handleImageUpload = e => {
+    //     // e.preventDefault()
+    //     // const requestBody = { avatar: user.imageUrl }
+
+    //     // axios.put("/api/edit-avatar", requestBody).then(res => console.log(res))``
+    //     const uploadData = new FormData()
+    //     uploadData.append("imageUrl", e.target.files[0])
+
+    //     service.uploadImage(uploadData).then(res => console.log(res)).catch(err => console.log(err))
+    // }
+
     // Delete
     const handleDelete = () => {
         axios
@@ -63,11 +78,23 @@ function EditAccount() {
         <Page title="Edit your account" description="" keywords="">
             <Container>
                 <Aside>
+                    {/* <form onSubmit={handleImageUpload}>
+                        <input
+                            type="file"
+                            name="avatar"
+                            id="avatar"
+                            // defaultValue={imageUrl}
+                            onChange={handleImage}
+                            // value={avatar}
+                        />
+
+                        <button type="submit">Send image</button>
+                    </form> */}
                     <ProfilePicture
-                        edit
                         src={user.imageUrl}
                         alt={user.fullName}
                     />
+
                     {/* <Button primary justify="center" type="submit">
                         Save
                     </Button> */}

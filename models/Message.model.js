@@ -11,7 +11,25 @@ const messageSchema = new Schema(
             ref: "User",
         },
         date: String,
-        message: String,
+        // message: [
+        //     {
+        //         sender: {
+        //             type: Schema.Types.ObjectId,
+        //             ref: "User",
+        //         },
+
+        //         receiver: {
+        //             type: Schema.Types.ObjectId,
+        //             ref: "User",
+        //         },
+
+        //         content: String,
+        //     },
+        //     {
+        //         timestamps: true,
+        //     },
+        // ],
+        message: Array,
     },
     {
         timestamps: true,

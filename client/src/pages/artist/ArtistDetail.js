@@ -58,23 +58,28 @@ function ArtistDetail(props) {
         }
     }, [])
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        const requestBody = {
-            message,
-            receiver: props.artist._id,
-            sender: user._id,
-            date,
-        }
-        axios
-            .put(`${API_URL}/api/send-message`, requestBody)
-            .then(res => {
-                navigate("/my-account")
-            })
-            .catch(err => {
-                const errorDescription = err.response
-                setErrorMessage(errorDescription)
-            })
+    // const handleSubmit = e => {
+    //     e.preventDefault()
+    //     const requestBody = {
+    //         message,
+    //         receiver: props.artist._id,
+    //         sender: user._id,
+    //         date,
+    //     }
+    //     axios
+    //         .put(`${API_URL}/api/send-message`, requestBody)
+    //         .then(res => {
+    //             navigate("/my-account")
+    //         })
+    //         .catch(err => {
+    //             const errorDescription = err.response
+    //             setErrorMessage(errorDescription)
+    //         })
+    // }
+
+    const handleSend = e => {
+        const requestBody = { sender: user.email, receiver: props.artist.email, date, message }
+        axios.post("/api/contact", requestBody)
     }
 
     return (
@@ -155,7 +160,7 @@ function ArtistDetail(props) {
                     ) : (
                         ""
                     )} */}
-                    <Form btnPrimary="Send" onSubmit={handleSubmit}>
+                    {/* <Form btnPrimary="Send" onSubmit={handleSubmit}>
                    
 
                         <Input
@@ -166,6 +171,25 @@ function ArtistDetail(props) {
                             min={getToday()}
                             value={date}
                             // defaultValue={}
+                            onChange={handleDate}
+                        />
+
+                        <Textarea
+                            label="Your message"
+                            name="message"
+                            id="message"
+                            onChange={handleMessage}
+                        />
+                    </Form> */}
+
+                    <Form btnPrimary="Send" onSubmit={handleSend}>
+                        <Input
+                            label="Enquiry for"
+                            type="date"
+                            name="date"
+                            id="date"
+                            min={getToday()}
+                            value={date}
                             onChange={handleDate}
                         />
 
