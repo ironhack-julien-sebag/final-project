@@ -102,14 +102,14 @@ function ArtistDetail(props) {
                         alt={props.artist.fullName}
                     />
 
-                    {isLoggedIn && props.artist._id === user._id && (
+                    {/* {isLoggedIn && props.artist._id === user._id && (
                         <Button
                             to={`/artists/${props.artist._id}/edit`}
                             primary
                         >
                             Edit this page
                         </Button>
-                    )}
+                    )} */}
                 </Aside>
 
                 <ArtistContainer>

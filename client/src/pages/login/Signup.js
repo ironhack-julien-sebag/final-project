@@ -17,13 +17,11 @@ import { AuthContext } from "../../context/auth"
 import Select from "../../components/forms/Select"
 import SiteData from "../../components/data/SiteData"
 
-const API_URL = "http://localhost:5005"
-
 function Signup(props) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [fullName, setFullName] = useState("")
-    const [city, setCity] = useState("")
+    const [city, setCity] = useState(SiteData.Cities[0])
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const navigate = useNavigate()
@@ -102,6 +100,7 @@ function Signup(props) {
                                 <option
                                     value={city}
                                     key={uuid()}
+                                    selected={city === SiteData.Cities[0] ? "selected" : ""}
                                 >
                                     {city}
                                 </option>

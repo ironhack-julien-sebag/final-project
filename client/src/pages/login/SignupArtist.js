@@ -17,15 +17,13 @@ import * as Font from "../../components/styles/Font"
 
 import SiteData from "../../components/data/SiteData"
 
-const API_URL = "http://localhost:5005"
-
 function SignupArtist() {
     const { isLoggedIn } = useContext(AuthContext)
 
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [city, setCity] = useState("Berlin")
+    const [city, setCity] = useState(SiteData.Cities[0])
     const [errorMessage, setErrorMessage] = useState("")
 
     const navigate = useNavigate()
@@ -46,7 +44,7 @@ function SignupArtist() {
 
             bio: "",
             price: 0,
-            genre: "",
+            genre: SiteData.Genres[0],
             available: [],
             youtube: [],
             youtubeLink: "",
@@ -124,7 +122,9 @@ function SignupArtist() {
                             name="role"
                             value="artist"
                         />
-                    </Form>
+                        </Form>
+                        
+                        {errorMessage && <Font.P>{errorMessage}</Font.P>}
                 </Content>
             </Container>
         </Page>

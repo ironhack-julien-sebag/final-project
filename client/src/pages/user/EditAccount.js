@@ -24,7 +24,8 @@ import Textarea from "../../components/forms/Textarea"
 import getToday from "../../components/utils/GetToday"
 import convertDate from "../../components/utils/ConvertDate"
 
-function EditAccount() {
+function EditAccount({ edited, setEdited }) {
+    // const { }
     const { user, setUser, setToken, logoutUser } = useContext(AuthContext)
 
     const [artist, setArtist] = useState("")
@@ -82,6 +83,7 @@ function EditAccount() {
 
                 setUser(user)
                 setToken(token)
+                setEdited(!edited)
                 navigate("/my-account")
             })
             .catch(err => {

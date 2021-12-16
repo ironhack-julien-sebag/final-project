@@ -3,11 +3,11 @@ const User = require("../models/User.model")
 const jwt = require("jsonwebtoken")
 const nodemailer = require("nodemailer")
 
-const fileUploader = require("../config/cloudinary.config")
+// const fileUploader = require("../config/cloudinary.config")
 
-const { isAuthenticated } = require("../middleware/jwt.middleware")
+// const { isAuthenticated } = require("../middleware/jwt.middleware")
 
-const APP_URL = "http://localhost:3000/"
+// const APP_URL = "http://localhost:3000/"
 
 router.get("/my-account", (req, res, next) => {
     User.find()
@@ -19,7 +19,6 @@ router.get("/my-account", (req, res, next) => {
 
 router.get("/users", (req, res, next) => {
     User.find().then(users => {
-        console.log(users)
         res.status(200).json(users)
     })
 })
@@ -30,7 +29,7 @@ router.get("/user/:id", (req, res, next) => {
         .catch(err => next(err))
 })
 
-router.put("/edit-user", fileUploader.single("imageUrl"), (req, res, next) => {
+router.put("/edit-user", (req, res, next) => {
     const { fullName, city, email, id, bio, price, genre, available } = req.body
 
     User.findByIdAndUpdate(
@@ -60,33 +59,33 @@ router.put("/edit-user", fileUploader.single("imageUrl"), (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-router.put("/edit-artist", (req, res, next) => {
-    const { fullName, city, price, bio, id } = req.body
-    console.log(req.body)
+// router.put("/edit-artist", (req, res, next) => {
+//     const { fullName, city, price, bio, id } = req.body
+//     console.log(req.body)
 
-    User.findByIdAndUpdate(
-        id,
-        { fullName, city, bio, id, price },
-        { new: true }
-    )
-        .then(updatedUser => {
-            const payload = {
-                fullName,
-                city,
-                bio,
-                id,
-                price,
-            }
+//     User.findByIdAndUpdate(
+//         id,
+//         { fullName, city, bio, id, price },
+//         { new: true }
+//     )
+//         .then(updatedUser => {
+//             const payload = {
+//                 fullName,
+//                 city,
+//                 bio,
+//                 id,
+//                 price,
+//             }
 
-            const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
-                algorithm: "HS256",
-                expiresIn: "6h",
-            })
+//             const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+//                 algorithm: "HS256",
+//                 expiresIn: "6h",
+//             })
 
-            res.status(200).json({ token: authToken, user: updatedUser })
-        })
-        .catch(err => console.log(err))
-})
+//             res.status(200).json({ token: authToken, user: updatedUser })
+//         })
+//         .catch(err => console.log(err))
+// })
 
 router.delete("/delete/:id", (req, res, next) => {
     const id = req.params.id

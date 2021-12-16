@@ -31,7 +31,7 @@ import scrollToTop from "./utils/ScrollToTop"
 
 function Switch() {
     const [artistsList, setArtistsList] = useState([])
-
+    const [edited, setEdited] = useState(false)
     useEffect(() => {
         axios
             .get("/api/users")
@@ -39,7 +39,7 @@ function Switch() {
                 setArtistsList(res.data)
             })
             .catch(err => console.log(err))
-    }, [])
+    }, [edited])
 
     if (artistsList === []) return <></>
 
@@ -114,7 +114,7 @@ function Switch() {
                 path="/my-account/edit"
                 element={
                     <ProtectedRoute redirectTo="/login">
-                        <EditAccount />
+                        <EditAccount edited={edited} setEdited={setEdited} />
                     </ProtectedRoute>
                 }
                 preload={scrollToTop}
