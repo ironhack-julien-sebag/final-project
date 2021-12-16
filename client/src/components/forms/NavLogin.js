@@ -11,7 +11,6 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: ${Variables.Margins.M};
-    margin-bottom: ${Variables.Margins.L};
 
     a {
         position: relative;
