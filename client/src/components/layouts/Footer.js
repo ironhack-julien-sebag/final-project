@@ -8,9 +8,6 @@ import { v4 as uuid } from "uuid"
 import * as Variables from "../styles/Variables"
 import * as Font from "../styles/Font"
 import ButtonSocial from "../ui/ButtonSocial"
-import Form from "../forms/Form"
-import Input from "../forms/Input"
-import Textarea from "../forms/Textarea"
 import SocialContainer from "../ui/SocialContainer"
 
 // Data
@@ -23,6 +20,10 @@ const Container = styled.footer`
     gap: ${Variables.Margins.L};
     background-color: ${Variables.ThemeColors.FooterBackground};
     padding: ${Variables.Margins.L} 5vw;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        grid-template-columns: repeat(1, 1fr);
+    }
 `
 
 const Col = styled.div`

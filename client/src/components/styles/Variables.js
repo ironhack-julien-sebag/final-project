@@ -73,6 +73,7 @@ export const LightTheme = {
     Success70: "#59E393",
     Danger: "#FF0000",
     Danger70: "#FF4C4D",
+    Danger5: "#FFE5E6",
 
     // Colors adapting to theme
     BackgroundColor: ColorsCommon.White,
@@ -91,6 +92,7 @@ export const DarkTheme = {
     Success70: "#99DD6E",
     Danger: "#FF6666",
     Danger70: "#FF1A1A",
+    Danger5: "#FFE5E6",
 
     // Colors adapting to theme
     BackgroundColor: ColorsCommon.Black,
@@ -122,6 +124,7 @@ export const ThemeColors = {
     Success70: ({ theme }) => theme.Success70,
     Danger: ({ theme }) => theme.Danger,
     Danger70: ({ theme }) => theme.Danger70,
+    Danger5: ({ theme }) => theme.Danger5,
 
     BackgroundColor: ({ theme }) => theme.BackgroundColor,
     FontColor: ({ theme }) => theme.FontColor,

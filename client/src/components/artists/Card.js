@@ -19,6 +19,13 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: 150px 1fr;
     gap: ${Variables.Margins.M};
+
+    @media ${Variables.Breakpoints.MobileL} {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
 `
 
 const Content = styled.span`
@@ -63,6 +70,15 @@ const Info = styled.span`
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        flex-direction: column;
+        align-items: flex-start;
+
+        a {
+            margin-top: ${Variables.Margins.M}
+        }
+    }
 `
 
 const TextInfo = styled.span`

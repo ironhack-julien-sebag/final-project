@@ -11,6 +11,11 @@ const Container = styled.div`
     gap: ${Variables.Margins.L};
     padding: calc(88px + ${Variables.Margins.XXL}) 10vw ${Variables.Margins.XXL} 10vw;
     min-height: 100vh;
+    width: 100vw;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        grid-template-columns: repeat(1, 1fr);
+    }
 `
 
 export const Aside = styled.aside`
@@ -19,9 +24,15 @@ export const Aside = styled.aside`
     gap: ${Variables.Margins.L};
     align-self: start;
 
-    ${props => props.artist && css`
-        justify-items: center;
-    `}
+    ${props =>
+        props.artist &&
+        css`
+            justify-items: center;
+        `}
+
+    @media ${Variables.Breakpoints.MobileL} {
+        grid-column: span 4;
+    }
 `
 
 export const ItemContainer = styled.div`
@@ -32,6 +43,14 @@ export const ItemContainer = styled.div`
 
 export const Content = styled.main`
     grid-column: span ${props => (props.large ? 3 : 2)};
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: ${Variables.Margins.L};
+    align-content: start;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        grid-column: span 4;
+    }
 `
 
 export const ArtistContainer = styled(Content)`
@@ -39,6 +58,10 @@ export const ArtistContainer = styled(Content)`
     grid-template-columns: 1fr;
     gap: ${Variables.Margins.L};
     align-content: start;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        grid-column: span 4;
+    }
 `
 
 export default Container

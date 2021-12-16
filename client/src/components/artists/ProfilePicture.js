@@ -48,6 +48,11 @@ const Picture = styled.img`
     border-radius: 50%;
     width: 100%;
     object-fit: cover;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        width: 120px;
+        justify-self: center;
+    }
 `
 
 function ProfilePicture(props) {

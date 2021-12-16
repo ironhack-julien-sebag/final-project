@@ -29,8 +29,17 @@ const Container = styled.button`
 
     &:hover {
         background-color: ${props =>
-            props.primary ? Variables.ThemeColors.Primary70 : props.danger ? Variables.ThemeColors.Danger : "none"};
-        color: ${props => !props.primary && Variables.ThemeColors.Primary70};
+            props.primary
+                ? Variables.ThemeColors.Primary70
+                : props.danger
+                ? Variables.ThemeColors.Danger70
+                : "none"};
+        color: ${props =>
+            props.primary
+                ? Variables.ThemeColors.White
+                : props.danger
+                ? Variables.ThemeColors.BackgroundColor
+                : Variables.ThemeColors.Primary70};
     }
 
     ${props =>

@@ -8,28 +8,56 @@ import * as Font from "../styles/Font"
 import Button from "../ui/Button"
 
 // Styles
-const Container = styled.div``
+const OpenButton = styled(Font.P)`
+    cursor: pointer;
+    font-weight: ${Variables.FontWeights.Bold};
+    color: ${Variables.ThemeColors.Danger};
+    transition: ${Variables.Transitions.Short};
 
-const OpenButton = styled(Font.P)``
+    display: ${props => (!props.open ? "block" : "none")};
 
-const ButtonsContainer = styled.div``
+    &:hover {
+        color: ${Variables.ThemeColors.Danger70};
+    }
+`
+
+const Container = styled.div`
+    background-color: ${Variables.ThemeColors.Danger5};
+    padding: ${Variables.Margins.M};
+    border: 1px solid ${Variables.ThemeColors.Danger};
+    border-radius: ${Variables.Radiuses.L};
+    display: ${props => (props.open ? "grid" : "none")};
+    grid-template-columns: 1fr;
+    gap: ${Variables.Margins.S};
+`
+
+const ButtonsContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    button:first-child {
+        margin-right: ${Variables.Margins.XXS};
+    }
+`
 
 function DangerZone(props) {
     const [open, setOpen] = useState(false)
-    const Open = open ? "open" : ""
 
     return (
         <>
-            <OpenButton onClick={() => setOpen(!open)}>
+            <OpenButton onClick={() => setOpen(!open)} open={open}>
                 Delete your account
             </OpenButton>
 
-            <Container className={Open}>
+            <Container open={open}>
                 <Font.P>Are you sure you want to delete your account?</Font.P>
 
                 <ButtonsContainer>
-                    <Button danger onClick={props.delete}>Yes delete my account</Button>
-                    <Button>No, cancel</Button>
+                    <Button danger onClick={props.delete}>
+                        Yes delete my account
+                    </Button>
+                    <Button onClick={() => setOpen(!open)}>No, cancel</Button>
                 </ButtonsContainer>
             </Container>
         </>

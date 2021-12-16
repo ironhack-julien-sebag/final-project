@@ -1,5 +1,5 @@
 // Packages
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { NavLink as Link, useLocation } from "react-router-dom"
 import styled from "styled-components"
 
@@ -30,6 +30,22 @@ const Nav = styled.nav`
     display: flex;
     align-items: center;
     justify-content: flex-start;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        position: absolute;
+        width: 100%;
+        background-color: ${Variables.ThemeColors.Primary};
+        left: 0;
+        top: -200px;
+        padding: 0 5vw ${Variables.Margins.S} 5vw;
+        flex-direction: column;
+        align-items: flex-start;
+        transition: ${Variables.Transitions.Short};
+
+        &.open {
+            top: 88px;
+        } 
+    }
 `
 
 const LinkStyled = styled(Link)`
@@ -64,6 +80,62 @@ const LinkStyled = styled(Link)`
 
     &:not(:last-child) {
         margin-right: ${Variables.Margins.M};
+
+        @media ${Variables.Breakpoints.MobileL} {
+            margin-right: 0;
+            margin-bottom: ${Variables.Margins.M};
+        }
+    }
+`
+
+const Burger = styled.button`
+    display: none;
+
+    @media ${Variables.Breakpoints.MobileL} {
+        display: inline;
+        position: relative;
+        background: none;
+        border: none;
+        padding: 0;
+        width: 30px;
+        height: 20px;
+
+        span {
+            width: 100%;
+            background-color: ${Variables.ThemeColors.White};
+            height: 2px;
+            position: absolute;
+            left: 0;
+            transition: ${Variables.Transitions.Short};
+
+            &:first-child {
+                top: 0;
+            }
+
+            &:nth-child(2) {
+                top: calc(50% - 2px / 2);
+            }
+
+            &:last-child {
+                bottom: 0;
+            }
+        }
+
+        &.open span {
+            &:first-child {
+                transform: rotate(45deg);
+                top: 45%;
+            }
+
+            &:nth-child(2) {
+                width: 0;
+            }
+
+            &:last-child {
+                transform: rotate(-45deg);
+                bottom: 45%;
+            }
+        }
     }
 `
 
@@ -71,11 +143,28 @@ function Header(props) {
     const { isLoggedIn, logoutUser } = useContext(AuthContext)
     const location = useLocation()
 
+    const [navOpen, setNavOpen] = useState(false)
+    const [burgerOpen, setBurgerOpen] = useState(false)
+
+    const isOpen = navOpen ? "open" : ""
+    const isBurgerOpen = burgerOpen ? "open" : ""
+
+    const handleOpen = e => {
+        setNavOpen(!navOpen)
+        setBurgerOpen(!burgerOpen)
+    }
+
     return (
         <Container>
             <Logo />
 
-            <Nav>
+            <Burger aria-label="Menu button" onClick={handleOpen} className={isBurgerOpen}>
+                <span />
+                <span />
+                <span />
+            </Burger>
+
+            <Nav className={isOpen} onClick={handleOpen}>
                 <LinkStyled to="/artists" onClick={scrollToTop}>
                     Artists
                 </LinkStyled>

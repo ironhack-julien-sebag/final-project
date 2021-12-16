@@ -18,6 +18,12 @@ export const H1 = styled.h1`
         top: -999em;
         left: -999em;
     `}
+
+    ${props => props.display && css`
+        @media ${Variables.Breakpoints.MobileL} {
+            font-size: 48px;
+        }
+    `}
 `
 
 export const H2 = styled.h2`

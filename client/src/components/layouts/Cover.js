@@ -61,6 +61,10 @@ const LogoStyled = styled(Logo)`
     --size: 150px;
     width: var(--size);
     height: var(--size);
+
+    @media ${Variables.Breakpoints.MobileL} {
+        --size: 100px;
+    }
 `
 
 function Cover(props) {

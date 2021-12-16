@@ -29,6 +29,10 @@ const Container = styled.div`
             background-color: ${Variables.ThemeColors.Primary};
         }
     }
+
+    @media ${Variables.Breakpoints.MobileL} {
+        grid-template-columns: repeat(1, 1fr);
+    }
 `
 
 function NavLogin() {

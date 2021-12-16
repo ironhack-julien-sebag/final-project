@@ -3,7 +3,9 @@ import React from "react"
 import styled from "styled-components"
 
 // Styles
-const Container = styled.svg``
+const Container = styled.svg`
+    
+`
 
 function Logo(props) {
     return (
