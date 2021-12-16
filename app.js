@@ -13,9 +13,7 @@ const express = require("express")
 
 const app = express()
 
-// Deploy Heroku
-const path = require("path")
-app.use(express.static(path.join(__dirname, "/client/build")))
+
 
 const { isAuthenticated } = require("./middleware/jwt.middleware")
 
@@ -42,7 +40,9 @@ require("./error-handling")(app)
 // Nodemailer
 const nodemailer = require("nodemailer")
 
-// Heroku
+// Deploy Heroku
+const path = require("path")
+app.use(express.static(path.join(__dirname, "/client/build")))
 app.use((req, res) => {
     // If no routes match, send them the React HTML.
     res.sendFile(__dirname + "/client/build/index.html")
