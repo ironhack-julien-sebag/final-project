@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../../context/auth"
 import axios from "axios"
-import { Link } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -12,8 +11,6 @@ import ProfilePicture from "../../components/artists/ProfilePicture"
 import Button from "../../components/ui/Button"
 import TextIcon from "../../components/forms/TextIcon"
 import CardSmall, { List } from "../../components/artists/CardSmall"
-
-// import MessagesContainer from "../../components/messages/MessagesContainer"
 
 function AccountUser() {
     const user = useContext(AuthContext).user
@@ -33,23 +30,8 @@ function AccountUser() {
             .catch(err => console.log(err))
     }, [])
 
-    console.log(contacted)
-
-    // Messages
-    // const [messagesList, setMessagesList] = useState([])
-    // const [isLoading, setIsLoading] = useState(true)
-
-    // useEffect(() => {
-    //     axios
-    //         .get("/api/all-messages")
-    //         .then(res => {
-    //             setMessagesList(res.data)
-    //             setIsLoading(false)
-    //         })
-    //         .catch(err => console.log(err))
-    // }, [])
-
-    // console.log(user)
+    const conditionContacted = !loading && contacted.length > 0
+    const conditionNotContacted = !loading && !contacted.length
 
     return (
         <Page title={user.fullName} description="" keywords="">
@@ -79,7 +61,7 @@ function AccountUser() {
 
                     {loading ? (
                         <Font.P>Loading</Font.P>
-                    ) : !loading && contacted.length > 0 ? (
+                    ) : conditionContacted ? (
                         <List>
                             {contacted.map(artist => (
                                 <CardSmall
@@ -89,17 +71,11 @@ function AccountUser() {
                                 />
                             ))}
                         </List>
-                    ) : !loading && contacted.length === 0 (
+                    ) : conditionNotContacted ? (
                         <Font.P>You did not contact any artist yet!</Font.P>
-                    )}
-
-                    {/* <Font.H2>Messages</Font.H2>
-
-                    {isLoading ? (
-                        <Font.P>Loading</Font.P>
                     ) : (
-                        messagesList.length > 0 && <p></p>
-                    )} */}
+                        ""
+                    )}
                 </Content>
             </Container>
         </Page>
@@ -107,12 +83,3 @@ function AccountUser() {
 }
 
 export default AccountUser
-
-//  <div>
-//                             {messagesList.map(message =>
-//                                 message.sender._id === user._id ||
-//                                 message.receiver._id === user._id
-//                                     ? message.message
-//                                     : ""
-//                             )}
-//                         </div>
