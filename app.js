@@ -1,6 +1,5 @@
 // ℹ️ Gets access to environment variables/settings
 
-
 // https://www.npmjs.com/package/dotenv
 require("dotenv/config")
 
@@ -12,8 +11,6 @@ require("./db")
 const express = require("express")
 
 const app = express()
-
-
 
 const { isAuthenticated } = require("./middleware/jwt.middleware")
 
@@ -34,9 +31,6 @@ app.use("/api", messageRouter)
 const authRouter = require("./routes/auth")
 app.use("/auth", authRouter)
 
-// ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
-require("./error-handling")(app)
-
 // Nodemailer
 const nodemailer = require("nodemailer")
 
@@ -47,5 +41,8 @@ app.use((req, res) => {
     // If no routes match, send them the React HTML.
     res.sendFile(__dirname + "/client/build/index.html")
 })
+
+// ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
+require("./error-handling")(app)
 
 module.exports = app
