@@ -22,7 +22,7 @@ import ButtonSocial from "../../components/ui/ButtonSocial"
 import TextIcon from "../../components/forms/TextIcon"
 import SocialContainer from "../../components/ui/SocialContainer"
 import { AuthContext } from "../../context/auth"
-import Button from "../../components/ui/Button"
+import * as Variables from "../../components/styles/Variables"
 
 // Utils
 import convertDate from "../../components/utils/ConvertDate"
@@ -53,32 +53,26 @@ function ArtistDetail(props) {
     const handleMessage = e => setMessage(e.target.value)
     const handleDate = e => setDate(e.target.value.toLocaleString())
 
-    // useEffect(() => {
-    //     if (isLoggedIn) {
-    //         // setSender(user._id)
-    //         console.log(`User: ${user._id}`)
-    //         console.log(`Artist: ${props.artist._id}`)
-    //     }
-    // }, [])
+    // Contacted
+    const [contacted, setContacted] = useState(false)
 
-    // const handleSubmit = e => {
-    //     e.preventDefault()
-    //     const requestBody = {
-    //         message,
-    //         receiver: props.artist._id,
-    //         sender: user._id,
-    //         date,
-    //     }
-    //     axios
-    //         .put(`${API_URL}/api/send-message`, requestBody)
-    //         .then(res => {
-    //             navigate("/my-account")
-    //         })
-    //         .catch(err => {
-    //             const errorDescription = err.response
-    //             setErrorMessage(errorDescription)
-    //         })
-    // }
+    useEffect(() => {
+        axios
+            .get(`/api/user/${isLoggedIn ? user._id : props.artist._id}`)
+            .then(res => {
+                res.data.contacted.find(artist => {
+                    return artist._id === props.artist._id
+                        ? setContacted(true)
+                        : ""
+                })
+                console.log(contacted)
+            })
+            .catch(err => console.log(err))
+    }, [])
+
+    // const hasUserContacted = userInfo.contacted
+
+    // console.log(hasUserContacted, props.artist._id)
 
     const handleSend = e => {
         const requestBody = {
@@ -86,9 +80,11 @@ function ArtistDetail(props) {
             receiver: props.artist.email,
             date,
             message,
+            id: user._id,
+            artistId: props.artist._id,
         }
         axios
-            .post("/api/contact", requestBody)
+            .put("/api/contact", requestBody)
             .then(() => navigate("/my-account"))
             .catch(err => setErrorMessage(err.response))
     }
@@ -208,11 +204,19 @@ function ArtistDetail(props) {
                         />
                     </Form> */}
 
+                    {/* {contacted && (
+                        <Font.P>
+                            You already contacted {props.artist.fullName}!
+                        </Font.P>
+                    )} */}
+
                     {!isLoggedIn ? (
                         <Font.P>
                             Please <Link to="/login">log in</Link> to contact{" "}
                             {props.artist.fullName}
                         </Font.P>
+                    ) : isLoggedIn && contacted ? (
+                            <Font.H5 color={Variables.Colors.Success}>You already contacted {props.artist.fullName}!</Font.H5>
                     ) : isLoggedIn && props.artist._id !== user._id ? (
                         <Form btnPrimary="Send" onSubmit={handleSend}>
                             <Input
