@@ -1,7 +1,5 @@
 // ℹ️ Gets access to environment variables/settings
-// Deploy Heroku
-const path = require("path")
-app.use(express.static(path.join(__dirname, "/client/build")))
+
 
 // https://www.npmjs.com/package/dotenv
 require("dotenv/config")
@@ -14,6 +12,10 @@ require("./db")
 const express = require("express")
 
 const app = express()
+
+// Deploy Heroku
+const path = require("path")
+app.use(express.static(path.join(__dirname, "/client/build")))
 
 const { isAuthenticated } = require("./middleware/jwt.middleware")
 
