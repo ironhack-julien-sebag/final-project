@@ -26,7 +26,11 @@ const Container = styled(Font.P)`
 function TextIcon(props) {
     return (
         <Container>
-            <Icon name="map" color={Variables.ThemeColors.Primary} size={16} />
+            <Icon
+                name={props.title === "Price" ? "euro" : "map"}
+                color={Variables.ThemeColors.Primary}
+                size={16}
+            />
 
             <span>
                 <Font.Strong>{props.title}:</Font.Strong>{" "}
@@ -37,6 +41,8 @@ function TextIcon(props) {
                         value={props.value}
                         style={{ display: "inline" }}
                         type={props.title === "Price" ? "number" : "text"}
+                        defaultValue={props.defaultValue}
+                        {...props}
                     />
                 ) : (
                     props.value

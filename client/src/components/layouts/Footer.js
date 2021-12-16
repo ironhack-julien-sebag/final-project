@@ -61,25 +61,11 @@ function Footer(props) {
                         <ButtonSocial to="#" type={item} key={uuid()} />
                     ))}
                 </SocialContainer>
-
-                <Font.P>
-                    <Font.Strong>Disclaimer:</Font.Strong> this is a student
-                    project, and all data here is fake. If you want to see more
-                    of my work, check my{" "}
-                    <a
-                        href="https://julien-sebag.design/"
-                        target="_blank"
-                        rel="noreferrer noopener"
-                    >
-                        portfolio here
-                    </a>
-                    !
-                </Font.P>
             </Col>
 
             <Col>
                 {/* Contact form */}
-                <Form action="" method="POST" btnPrimary="Send" id="contact">
+                {/* <Form action="" method="POST" btnPrimary="Send" id="contact">
                     <Input
                         label="Your name"
                         name="name"
@@ -104,7 +90,20 @@ function Footer(props) {
                         id="message"
                         footer
                     />
-                </Form>
+                </Form> */}
+                <Font.P>
+                    <Font.Strong>Disclaimer:</Font.Strong> this is a student
+                    project, and all data here is fake. If you want to see more
+                    of my work, check my{" "}
+                    <a
+                        href="https://julien-sebag.design/"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                    >
+                        portfolio here
+                    </a>
+                    !
+                </Font.P>
             </Col>
         </Container>
     )

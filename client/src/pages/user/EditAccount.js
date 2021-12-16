@@ -1,24 +1,33 @@
 // Imports
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { AuthContext } from "../../context/auth"
 import axios from "axios"
+import { v4 as uuid } from "uuid"
 
 // Components
 import Page from "../../components/layouts/Page"
 import * as Font from "../../components/styles/Font"
-import Container, { Aside, Content } from "../../components/layouts/Container"
+import Container, {
+    Aside,
+    Content,
+    ItemContainer,
+} from "../../components/layouts/Container"
 import ProfilePicture from "../../components/artists/ProfilePicture"
 import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
-import Button from "../../components/ui/Button"
 import DangerZone from "../../components/forms/DangerZone"
-// const API_URL = "http://localhost:5005"
+import Select from "../../components/forms/Select"
+import SiteData from "../../components/data/SiteData"
+import Textarea from "../../components/forms/Textarea"
 
-import service from "../../api/service"
+import getToday from "../../components/utils/GetToday"
+import convertDate from "../../components/utils/ConvertDate"
 
 function EditAccount() {
     const { user, setUser, setToken, logoutUser } = useContext(AuthContext)
+
+    const [artist, setArtist] = useState("")
 
     const navigate = useNavigate()
 
@@ -26,17 +35,46 @@ function EditAccount() {
     const [email, setEmail] = useState(user.email)
     const [city, setCity] = useState(user.city)
     const [errorMessage, setErrorMessage] = useState(undefined)
-    // const [avatar, setAvatar] = useState(user.imageUrl)
-    // const [imageUrl, setImageUrl] = useState(user.imageUrl)
+
+    const [price, setPrice] = useState(0)
+    const [bio, setBio] = useState("")
+    const [genre, setGenre] = useState("")
+    const [available, setAvailable] = useState("")
+
+    useEffect(() => {
+        axios
+            .get(`/api/user/${user._id}`)
+            .then(res => {
+                setArtist(res.data)
+                setPrice(res.data.price)
+                setBio(res.data.bio)
+                setGenre(res.data.genre)
+                setAvailable(res.data.available)
+            })
+            .catch(err => console.log(err))
+    }, [])
 
     const handleFullName = e => setFullName(e.target.value)
     const handleEmail = e => setEmail(e.target.value)
     const handleCity = e => setCity(e.target.value)
-    // const handleImage = e => setImageUrl(e.target.value)
 
-    const handleSubmit = e => {
+    const handlePrice = e => setPrice(e.target.value)
+    const handleBio = e => setBio(e.target.value)
+    const handleGenre = e => setGenre(e.target.value)
+    const handleAvailable = e => setAvailable([...available, e.target.value])
+
+    const handleSubmitUser = e => {
         e.preventDefault()
-        const requestBody = { fullName, email, city, id: user._id }
+        const requestBody = {
+            fullName,
+            email,
+            city,
+            id: user._id,
+            bio: user.role === "user" ? "" : bio,
+            price: user.role === "user" ? "" : price,
+            genre: user.role === "user" ? "" : genre,
+            available: user.role === "user" ? "" : available,
+        }
         axios
             .put(`/api/edit-user`, requestBody)
             .then(res => {
@@ -47,20 +85,9 @@ function EditAccount() {
                 navigate("/my-account")
             })
             .catch(err => {
-                console.log(err)
+                setErrorMessage(err)
             })
     }
-
-    // const handleImageUpload = e => {
-    //     // e.preventDefault()
-    //     // const requestBody = { avatar: user.imageUrl }
-
-    //     // axios.put("/api/edit-avatar", requestBody).then(res => console.log(res))``
-    //     const uploadData = new FormData()
-    //     uploadData.append("imageUrl", e.target.files[0])
-
-    //     service.uploadImage(uploadData).then(res => console.log(res)).catch(err => console.log(err))
-    // }
 
     // Delete
     const handleDelete = () => {
@@ -69,7 +96,6 @@ function EditAccount() {
             .then(() => {
                 navigate("/")
                 logoutUser()
-                // logoutUser()
             })
             .catch(err => console.log(err))
     }
@@ -78,32 +104,13 @@ function EditAccount() {
         <Page title="Edit your account" description="" keywords="">
             <Container>
                 <Aside>
-                    {/* <form onSubmit={handleImageUpload}>
-                        <input
-                            type="file"
-                            name="avatar"
-                            id="avatar"
-                            // defaultValue={imageUrl}
-                            onChange={handleImage}
-                            // value={avatar}
-                        />
-
-                        <button type="submit">Send image</button>
-                    </form> */}
-                    <ProfilePicture
-                        src={user.imageUrl}
-                        alt={user.fullName}
-                    />
-
-                    {/* <Button primary justify="center" type="submit">
-                        Save
-                    </Button> */}
+                    <ProfilePicture src={user.imageUrl} alt={user.fullName} />
                 </Aside>
 
-                <Content large>
+                <Content>
                     <Font.H1>Edit your account</Font.H1>
 
-                    <Form onSubmit={handleSubmit} btnPrimary="Save">
+                    <Form onSubmit={handleSubmitUser} btnPrimary="Save">
                         <Input
                             label="Your name"
                             name="fullName"
@@ -122,13 +129,55 @@ function EditAccount() {
                             disabled
                         />
 
-                        <Input
+                        <Select
                             label="Your city"
-                            name="city"
-                            id="city"
                             value={city}
                             onChange={handleCity}
-                        />
+                        >
+                            {SiteData.Cities.map(city => (
+                                <option
+                                    value={city}
+                                    key={uuid()}
+                                    selected={city === user.city && "selected"}
+                                >
+                                    {city}
+                                </option>
+                            ))}
+                        </Select>
+
+                        {user.role === "artist" && (
+                            <Select
+                                label="Genre"
+                                value={genre}
+                                onChange={handleGenre}
+                            >
+                                {SiteData.Genres.map(genre => (
+                                    <option
+                                        value={genre}
+                                        key={uuid()}
+                                        selected={
+                                            genre === artist.genre && "selected"
+                                        }
+                                    >
+                                        {genre}
+                                    </option>
+                                ))}
+                            </Select>
+                        )}
+
+                        {user.role === "artist" && (
+                            <Input
+                                type="number"
+                                label="Your price"
+                                defaultValue={price}
+                                value={price}
+                                onChange={handlePrice}
+                            />
+                        )}
+
+                        {user.role === "artist" && (
+                            <Textarea value={bio} onChange={handleBio} />
+                        )}
 
                         <Font.P>
                             <Link to="/my-account/edit/edit-password">
@@ -141,6 +190,32 @@ function EditAccount() {
 
                     <DangerZone delete={handleDelete} />
                 </Content>
+
+                {user.role === "artist" && (
+                    <Aside>
+                        <ItemContainer>
+                            <Font.H4>Availabilities</Font.H4>
+
+                            {available.length !== 0 && (
+                                <Font.List>
+                                    {available.map(date => (
+                                        <li key={uuid()}>
+                                            {convertDate(date)}
+                                        </li>
+                                    ))}
+                                </Font.List>
+                            )}
+
+                            <Input
+                                label="Add availabilities"
+                                type="date"
+                                onChange={handleAvailable}
+                                min={getToday()}
+                                value={available[0]}
+                            />
+                        </ItemContainer>
+                    </Aside>
+                )}
             </Container>
         </Page>
     )

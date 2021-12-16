@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { v4 as uuid } from "uuid"
 import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -22,12 +22,13 @@ import ButtonSocial from "../../components/ui/ButtonSocial"
 import TextIcon from "../../components/forms/TextIcon"
 import SocialContainer from "../../components/ui/SocialContainer"
 import { AuthContext } from "../../context/auth"
+import Button from "../../components/ui/Button"
 
 // Utils
 import convertDate from "../../components/utils/ConvertDate"
 import getToday from "../../components/utils/GetToday"
 
-const API_URL = "http://localhost:5005"
+// const API_URL = "http://localhost:5005"
 
 function ArtistDetail(props) {
     const conditions =
@@ -44,19 +45,21 @@ function ArtistDetail(props) {
     const [message, setMessage] = useState("")
     const [date, setDate] = useState(getToday())
 
-    const [sender, setSender] = useState("")
+    // const [sender, setSender] = useState("")
     // const [sender] = useState(user._id)
-    const [receiver] = useState(props.artist._id)
+    // const [receiver] = useState(props.artist._id)
     const [errorMessage, setErrorMessage] = useState(undefined)
 
     const handleMessage = e => setMessage(e.target.value)
     const handleDate = e => setDate(e.target.value.toLocaleString())
 
-    useEffect(() => {
-        if (isLoggedIn) {
-            setSender(user._id)
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (isLoggedIn) {
+    //         // setSender(user._id)
+    //         console.log(`User: ${user._id}`)
+    //         console.log(`Artist: ${props.artist._id}`)
+    //     }
+    // }, [])
 
     // const handleSubmit = e => {
     //     e.preventDefault()
@@ -87,7 +90,7 @@ function ArtistDetail(props) {
         axios
             .post("/api/contact", requestBody)
             .then(() => navigate("/my-account"))
-            .catch(err => console.log(err))
+            .catch(err => setErrorMessage(err.response))
     }
 
     return (
@@ -98,6 +101,15 @@ function ArtistDetail(props) {
                         src={props.artist.imageUrl}
                         alt={props.artist.fullName}
                     />
+
+                    {isLoggedIn && props.artist._id === user._id && (
+                        <Button
+                            to={`/artists/${props.artist._id}/edit`}
+                            primary
+                        >
+                            Edit this page
+                        </Button>
+                    )}
                 </Aside>
 
                 <ArtistContainer>
@@ -107,7 +119,13 @@ function ArtistDetail(props) {
 
                     <TextIcon title="Price" value={`${props.artist.price}€`} />
 
-                    <Font.P bio>{props.artist.bio}</Font.P>
+                    {props.artist.bio !== "" ? (
+                        <Font.P bio>{props.artist.bio}</Font.P>
+                    ) : (
+                        <Font.P>
+                            {props.artist.fullName} did not write a bio yet!
+                        </Font.P>
+                    )}
 
                     {props.artist.youtube.length > 0 && (
                         <>
@@ -190,24 +208,33 @@ function ArtistDetail(props) {
                         />
                     </Form> */}
 
-                    <Form btnPrimary="Send" onSubmit={handleSend}>
-                        <Input
-                            label="Enquiry for"
-                            type="date"
-                            name="date"
-                            id="date"
-                            min={getToday()}
-                            value={date}
-                            onChange={handleDate}
-                        />
+                    {!isLoggedIn ? (
+                        <Font.P>
+                            Please <Link to="/login">log in</Link> to contact{" "}
+                            {props.artist.fullName}
+                        </Font.P>
+                    ) : isLoggedIn && props.artist._id !== user._id ? (
+                        <Form btnPrimary="Send" onSubmit={handleSend}>
+                            <Input
+                                label="Enquiry for"
+                                type="date"
+                                name="date"
+                                id="date"
+                                min={getToday()}
+                                value={date}
+                                onChange={handleDate}
+                            />
 
-                        <Textarea
-                            label="Your message"
-                            name="message"
-                            id="message"
-                            onChange={handleMessage}
-                        />
-                    </Form>
+                            <Textarea
+                                label="Your message"
+                                name="message"
+                                id="message"
+                                onChange={handleMessage}
+                            />
+                        </Form>
+                    ) : (
+                        ""
+                    )}
 
                     {errorMessage && <Font.P>{errorMessage}</Font.P>}
                 </ArtistContainer>
@@ -216,11 +243,18 @@ function ArtistDetail(props) {
                     <ItemContainer>
                         <Font.H4>Availabilities</Font.H4>
 
-                        <Font.List>
-                            {props.artist.available.sort().map(item => (
-                                <li key={uuid()}>{convertDate(item)}</li>
-                            ))}
-                        </Font.List>
+                        {props.artist.available.length > 0 ? (
+                            <Font.List>
+                                {props.artist.available.sort().map(item => (
+                                    <li key={uuid()}>{convertDate(item)}</li>
+                                ))}
+                            </Font.List>
+                        ) : (
+                            <Font.P>
+                                {props.artist.fullName} did not add dates yet,
+                                but you can contact them directly!
+                            </Font.P>
+                        )}
                     </ItemContainer>
 
                     {conditions && (

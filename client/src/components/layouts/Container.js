@@ -38,6 +38,7 @@ export const ArtistContainer = styled(Content)`
     display: grid;
     grid-template-columns: 1fr;
     gap: ${Variables.Margins.L};
+    align-content: start;
 `
 
 export default Container

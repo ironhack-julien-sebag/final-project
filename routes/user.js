@@ -19,18 +19,23 @@ router.get("/my-account", (req, res, next) => {
 
 router.get("/users", (req, res, next) => {
     User.find().then(users => {
+        console.log(users)
         res.status(200).json(users)
     })
 })
 
-router.put("/edit-user", fileUploader.single("imageUrl"), (req, res, next) => {
-    const { fullName, city, email, id, imageUrl } = req.body
+router.get("/user/:id", (req, res, next) => {
+    User.findById(req.params.id)
+        .then(userFromDb => res.status(200).json(userFromDb))
+        .catch(err => next(err))
+})
 
-    console.log(req.file)
+router.put("/edit-user", fileUploader.single("imageUrl"), (req, res, next) => {
+    const { fullName, city, email, id, bio, price, genre, available } = req.body
 
     User.findByIdAndUpdate(
         id,
-        { fullName, city, email, imageUrl },
+        { fullName, city, email, bio, price, genre, available },
         { new: true }
     )
         .then(updatedUser => {
@@ -39,6 +44,10 @@ router.put("/edit-user", fileUploader.single("imageUrl"), (req, res, next) => {
                 email,
                 city,
                 id,
+                bio,
+                price,
+                genre,
+                available,
             }
 
             const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
@@ -51,14 +60,33 @@ router.put("/edit-user", fileUploader.single("imageUrl"), (req, res, next) => {
         .catch(err => console.log(err))
 })
 
-router.put(
-    "/edit-avatar",
-    fileUploader.single("imageUrl"),
-    (req, res, next) => {
-        const { imageUrl } = req.body
-        console.log(imageUrl)
-    }
-)
+router.put("/edit-artist", (req, res, next) => {
+    const { fullName, city, price, bio, id } = req.body
+    console.log(req.body)
+
+    User.findByIdAndUpdate(
+        id,
+        { fullName, city, bio, id, price },
+        { new: true }
+    )
+        .then(updatedUser => {
+            const payload = {
+                fullName,
+                city,
+                bio,
+                id,
+                price,
+            }
+
+            const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+                algorithm: "HS256",
+                expiresIn: "6h",
+            })
+
+            res.status(200).json({ token: authToken, user: updatedUser })
+        })
+        .catch(err => console.log(err))
+})
 
 router.delete("/delete/:id", (req, res, next) => {
     const id = req.params.id

@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react"
 // import styled from "styled-components"
 import { Link, useNavigate, Navigate } from "react-router-dom"
 import axios from "axios"
+import { v4 as uuid } from "uuid"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -13,6 +14,8 @@ import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
 import * as Font from "../../components/styles/Font"
 import { AuthContext } from "../../context/auth"
+import Select from "../../components/forms/Select"
+import SiteData from "../../components/data/SiteData"
 
 const API_URL = "http://localhost:5005"
 
@@ -90,13 +93,20 @@ function Signup(props) {
                             onChange={handleEmail}
                         />
 
-                        <Input
-                            label="City"
-                            id="city"
-                            name="city"
+                        <Select
+                            label="Select your city"
                             value={city}
                             onChange={handleCity}
-                        />
+                        >
+                            {SiteData.Cities.map(city => (
+                                <option
+                                    value={city}
+                                    key={uuid()}
+                                >
+                                    {city}
+                                </option>
+                            ))}
+                        </Select>
 
                         <Password
                             label="Password"

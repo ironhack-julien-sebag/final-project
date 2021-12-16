@@ -1,6 +1,9 @@
 // Imports
-import React from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { v4 as uuid } from "uuid"
+import axios from "axios"
+import { AuthContext } from "../../context/auth"
+import { useNavigate } from "react-router-dom"
 
 // Components
 import Page from "../../components/layouts/Page"
@@ -18,110 +21,132 @@ import Button from "../../components/ui/Button"
 import TextIcon from "../../components/forms/TextIcon"
 
 // Utils
-import convertDate from "../../components/utils/ConvertDate"
+// import convertDate from "../../components/utils/ConvertDate"
+import getToday from "../../components/utils/GetToday"
 
 function EditArtist(props) {
+    const [fullName, setFullName] = useState("")
+    const [city, setCity] = useState("")
+    const [bio, setBio] = useState("")
+    const [price, setPrice] = useState("")
+
+    useEffect(() => {
+        setFullName(props.artist.fullName)
+        setBio(props.artist.bio)
+        setCity(props.artist.city)
+        setPrice(props.artist.price)
+    }, [])
+
+    const navigate = useNavigate()
+
+    const { user, setUser, setToken, logoutUser } = useContext(AuthContext)
+
+    const handleFullName = e => setFullName(e.target.value)
+    const handleCity = e => setCity(e.target.value)
+    const handleBio = e => setBio(e.target.value)
+    const handlePrice = e => setPrice(e.target.value)
+
+    console.log(user._id)
+
+    const handleForm = e => {
+        e.preventDefault()
+
+        const requestBody = { fullName, bio, city, price, id: props.artist._id }
+
+        console.log(requestBody)
+
+        axios
+            .put(`/api/edit-artist`, requestBody)
+            .then(res => {
+                const { token, user } = res.data
+                console.log(user, token)
+                setUser(user)
+                setToken(token)
+
+                setFullName(requestBody.fullName)
+                setCity(requestBody.city)
+                setBio(requestBody.bio)
+                setPrice(requestBody.price)
+                
+                navigate(`/artists/${props.artist._id}`)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
     return (
-        <Page
-            title={`Edit ${props.artist.name}`}
-            description=""
-            keywords=""
-        >
-            <Container>
-                <Aside artist>
-                    <ProfilePicture
-                        src={props.artist.picture}
-                        alt={`Profile picture ${props.artist.name}`}
-                        edit
-                    />
+        <Page title={`Edit ${fullName}`} description="" keywords="">
+            <form onSubmit={handleForm}>
+                <Container>
+                    <Aside artist>
+                        <ProfilePicture src={props.artist.imageUrl} />
+                        <Button type="submit" primary>
+                            Save
+                        </Button>
+                    </Aside>
 
-                    <Button primary justify="center">
-                        Save
-                    </Button>
-                </Aside>
-
-                <ArtistContainer>
-                    <Input
-                        name="name"
-                        id="name"
-                        value={props.artist.name}
-                        large
-                    />
-
-                    <TextIcon
-                        title="Location"
-                        value={props.artist.location}
-                        input
-                    />
-                    <TextIcon title="Price" value={props.artist.price} input />
-
-                    <Textarea
-                        name="bio"
-                        id="bio"
-                        value={props.artist.bio}
-                        auto
-                    />
-
-                    <Font.H4>Medias</Font.H4>
-
-                    {props.artist.youtube.length > 0 ? (
-                        props.artist.youtube.map(item => (
-                            <Input
-                                name={`youtube-${uuid()}`}
-                                id={`youtube-${uuid()}`}
-                                value={item}
-                                key={uuid()}
-                            />
-                        ))
-                    ) : (
+                    <ArtistContainer>
                         <Input
-                            name={`youtube-${uuid()}`}
-                            id={`youtube-${uuid()}`}
-                        />
-                    )}
-
-                    <Button justify="start">Add a new link</Button>
-                </ArtistContainer>
-
-                <Aside>
-                    <ItemContainer>
-                        <Font.H4>Availabilities</Font.H4>
-
-                        <Font.List>
-                            {props.artist.available.sort().map(item => (
-                                <li key={uuid()}>{convertDate(item)}</li>
-                            ))}
-                        </Font.List>
-
-                        <Button to="/my-account/edit-date">Edit dates</Button>
-                    </ItemContainer>
-
-                    <ItemContainer>
-                        <Font.H4>Follow</Font.H4>
-
-                        <Input
-                            label="Youtube"
-                            name="youtube"
-                            id="youtube"
-                            value={props.artist.youtubeLink}
+                            large
+                            name="fullName"
+                            id="fullName"
+                            value={fullName}
+                            onChange={handleFullName}
                         />
 
-                        <Input
-                            label="Facebook"
-                            name="facebook"
-                            id="facebook"
-                            value={props.artist.facebookLink}
+                        <TextIcon
+                            input
+                            title="City"
+                            defaultValue={city}
+                            value={city}
+                            onChange={handleCity}
                         />
 
-                        <Input
-                            label="Instagram"
-                            name="instagram"
-                            id="instagram"
-                            value={props.artist.instagramLink}
+                        <TextIcon
+                            title="Price"
+                            defaultValue={price}
+                            value={price}
+                            input
+                            onChange={handlePrice}
                         />
-                    </ItemContainer>
-                </Aside>
-            </Container>
+
+                        <Textarea onChange={handleBio}>{bio}</Textarea>
+
+                        <Font.H4>YouTube links</Font.H4>
+
+                        {props.artist.youtube.length > 0 ? (
+                            props.artist.youtube.map(link => (
+                                <Input key={uuid()} />
+                            ))
+                        ) : (
+                            <Input />
+                        )}
+                    </ArtistContainer>
+
+                    <Aside>
+                        <ItemContainer>
+                            <Font.H4>Availabilities</Font.H4>
+
+                            {props.artist.available > 0 ? (
+                                <>
+                                    <Font.List>
+                                        {props.artist.available.map(date => (
+                                            <li key={uuid()}>{date}</li>
+                                        ))}
+                                    </Font.List>
+                                </>
+                            ) : (
+                                <Input
+                                    label="Add new availability"
+                                    type="date"
+                                    min={getToday()}
+                                />
+                            )}
+                        </ItemContainer>
+                    </Aside>
+                </Container>
+            </form>
         </Page>
     )
 }

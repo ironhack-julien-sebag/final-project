@@ -17,7 +17,6 @@ import SignupArtist from "../pages/login/SignupArtist"
 import Artists from "../pages/artist/Artists"
 import ArtistDetail from "../pages/artist/ArtistDetail"
 import EditArtist from "../pages/artist/EditArtist"
-import ArtistAccount from "../pages/artist/ArtistAccount"
 
 // Protected routes
 import ProtectedRoute from "../components/utils/ProtectedRoutes"
@@ -36,9 +35,13 @@ function Switch() {
     useEffect(() => {
         axios
             .get("/api/users")
-            .then(res => setArtistsList(res.data))
+            .then(res => {
+                setArtistsList(res.data)
+            })
             .catch(err => console.log(err))
     }, [])
+
+    if (artistsList === []) return <></>
 
     return (
         <Routes>
@@ -47,7 +50,11 @@ function Switch() {
             {/* Login */}
             <Route path="/login" element={<Login />} preload={scrollToTop} />
             <Route path="/signup" element={<Signup />} preload={scrollToTop} />
-            <Route path="/signup/artist" element={<SignupArtist />} preload={scrollToTop} />
+            <Route
+                path="/signup/artist"
+                element={<SignupArtist />}
+                preload={scrollToTop}
+            />
             <Route
                 path="/forgot-password"
                 element={<ForgotPassword />}
@@ -79,17 +86,6 @@ function Switch() {
                             </ProtectedRoute>
                         }
                         key={`/artists/${artist._id}/edit`}
-                        preload={scrollToTop}
-                    />
-                    {/* Artist account */}
-                    <Route
-                        path={`/artist/${artist._id}`}
-                        element={
-                            <ProtectedRoute redirectTo="/login">
-                                <ArtistAccount artist={artist} />
-                            </ProtectedRoute>
-                        }
-                        key={`/artist/${artist._id}`}
                         preload={scrollToTop}
                     />
                     {/* Edit artist account */}

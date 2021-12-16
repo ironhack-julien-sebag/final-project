@@ -3,8 +3,8 @@ import React from "react"
 import styled from "styled-components"
 
 // Components
-import * as Variables from "../styles/Variables"
-import * as Font from "../styles/Font"
+// import * as Variables from "../styles/Variables"
+// import * as Font from "../styles/Font"
 import Message from "./Message"
 
 // Styles

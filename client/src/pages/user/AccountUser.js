@@ -9,28 +9,31 @@ import * as Font from "../../components/styles/Font"
 import Container, { Aside, Content } from "../../components/layouts/Container"
 import ProfilePicture from "../../components/artists/ProfilePicture"
 import Button from "../../components/ui/Button"
+import TextIcon from "../../components/forms/TextIcon"
 
-import MessagesContainer from "../../components/messages/MessagesContainer"
+// import MessagesContainer from "../../components/messages/MessagesContainer"
 
 function AccountUser() {
     const user = useContext(AuthContext).user
 
     // Messages
-    const [messagesList, setMessagesList] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    // const [messagesList, setMessagesList] = useState([])
+    // const [isLoading, setIsLoading] = useState(true)
 
-    useEffect(() => {
-        axios
-            .get("/api/all-messages")
-            .then(res => {
-                setMessagesList(res.data)
-                setIsLoading(false)
-            })
-            .catch(err => console.log(err))
-    }, [])
+    // useEffect(() => {
+    //     axios
+    //         .get("/api/all-messages")
+    //         .then(res => {
+    //             setMessagesList(res.data)
+    //             setIsLoading(false)
+    //         })
+    //         .catch(err => console.log(err))
+    // }, [])
+
+    console.log(user)
 
     return (
-        <Page title="User" description="" keywords="">
+        <Page title={user.fullName} description="" keywords="">
             <Container>
                 <Aside>
                     <ProfilePicture src={user.imageUrl} alt={user.fullName} />
@@ -51,13 +54,15 @@ function AccountUser() {
                 <Content large>
                     <Font.H1>Welcome {user.fullName}</Font.H1>
 
-                    <Font.H2>Messages</Font.H2>
+                    <TextIcon title="Location" value={user.city} />
+
+                    {/* <Font.H2>Messages</Font.H2>
 
                     {isLoading ? (
                         <Font.P>Loading</Font.P>
                     ) : (
                         messagesList.length > 0 && <p></p>
-                    )}
+                    )} */}
                 </Content>
             </Container>
         </Page>

@@ -4,8 +4,8 @@ import styled from "styled-components"
 import { v4 as uuid } from "uuid"
 
 // Components
-import * as Variables from "../styles/Variables"
-import * as Font from "../styles/Font"
+// import * as Variables from "../styles/Variables"
+// import * as Font from "../styles/Font"
 
 // Styles
 const Container = styled.div``

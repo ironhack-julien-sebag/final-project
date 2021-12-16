@@ -70,7 +70,22 @@ router.post("/signup", (req, res, next) => {
 })
 
 router.post("/signup-artist", (req, res, next) => {
-    const { fullName, email, password, city, role, imageUrl, price } = req.body
+    const {
+        fullName,
+        email,
+        password,
+        city,
+        role,
+        imageUrl,
+        bio,
+        price,
+        genre,
+        available,
+        youtube,
+        youtubeLink,
+        facebookLink,
+        instagramLink,
+    } = req.body
 
     if (fullName === "" || email === "" || password === "") {
         res.status(400).json({ message: "Provide email, password and name" })
@@ -108,12 +123,28 @@ router.post("/signup-artist", (req, res, next) => {
             city,
             role: "artist",
             imageUrl: randomAvatar(),
-            price: 3000,
+
+            bio,
+            price,
+            genre,
+            available,
+            youtube,
+            youtubeLink,
+            facebookLink,
+            instagramLink,
         })
             .then(createdUser => {
                 const { fullName, email, _id, city, role, imageUrl, price } =
                     createdUser
-                const user = { fullName, email, _id, city, role, imageUrl, price }
+                const user = {
+                    fullName,
+                    email,
+                    _id,
+                    city,
+                    role,
+                    imageUrl,
+                    price,
+                }
                 res.status(201).json({ user: user })
             })
             .catch(err => {

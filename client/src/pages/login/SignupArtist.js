@@ -12,8 +12,8 @@ import Form from "../../components/forms/Form"
 import Input from "../../components/forms/Input"
 import Password from "../../components/forms/Password"
 import Select from "../../components/forms/Select"
-import * as Font from "../../components/styles/Font"
 import { AuthContext } from "../../context/auth"
+import * as Font from "../../components/styles/Font"
 
 import SiteData from "../../components/data/SiteData"
 
@@ -25,7 +25,7 @@ function SignupArtist() {
     const [fullName, setFullName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [city, setCity] = useState("")
+    const [city, setCity] = useState("Berlin")
     const [errorMessage, setErrorMessage] = useState("")
 
     const navigate = useNavigate()
@@ -37,7 +37,22 @@ function SignupArtist() {
 
     const handleSubmit = e => {
         e.preventDefault()
-        const requestBody = { email, password, fullName, city, role: "artist", price: 3000 }
+        const requestBody = {
+            email,
+            password,
+            fullName,
+            city,
+            role: "artist",
+
+            bio: "",
+            price: 0,
+            genre: "",
+            available: [],
+            youtube: [],
+            youtubeLink: "",
+            facebookLink: "",
+            instagramLink: "",
+        }
         axios
             .post(`${API_URL}/auth/signup-artist`, requestBody)
             .then(res => navigate("/login"))
@@ -56,7 +71,17 @@ function SignupArtist() {
                 <Content>
                     <NavLogin />
 
-                    <Form btnPrimary="Create your account" onSubmit={handleSubmit}>
+                    <Form
+                        btnPrimary="Create your account"
+                        onSubmit={handleSubmit}
+                    >
+                        <Font.P>
+                            If you're a user wanting to book artists,{" "}
+                            <Link to="/signup">
+                                register here instead!
+                            </Link>
+                        </Font.P>
+
                         <Input
                             label="Your display name"
                             id="fullName"
