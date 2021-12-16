@@ -1,4 +1,8 @@
 // ℹ️ Gets access to environment variables/settings
+// Deploy Heroku
+const path = require("path")
+app.use(express.static(path.join(__dirname, "/client/build")))
+
 // https://www.npmjs.com/package/dotenv
 require("dotenv/config")
 
@@ -35,5 +39,11 @@ require("./error-handling")(app)
 
 // Nodemailer
 const nodemailer = require("nodemailer")
+
+// Heroku
+app.use((req, res) => {
+    // If no routes match, send them the React HTML.
+    res.sendFile(__dirname + "/client/build/index.html")
+})
 
 module.exports = app
