@@ -19,7 +19,7 @@ function AccountUser() {
     const user = useContext(AuthContext).user
 
     const [userInfo, setUserInfo] = useState("")
-    const [contacted, setContacted] = useState(([] = ``))
+    const [contacted, setContacted] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -79,7 +79,7 @@ function AccountUser() {
 
                     {loading ? (
                         <Font.P>Loading</Font.P>
-                    ) : contacted.length > 0 ? (
+                    ) : !loading && contacted.length > 0 ? (
                         <List>
                             {contacted.map(artist => (
                                 <CardSmall
@@ -89,7 +89,7 @@ function AccountUser() {
                                 />
                             ))}
                         </List>
-                    ) : (
+                    ) : !loading && contacted.length === 0 (
                         <Font.P>You did not contact any artist yet!</Font.P>
                     )}
 

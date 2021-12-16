@@ -29,6 +29,20 @@ const userSchema = new Schema(
         youtubeLink: String,
         facebookLink: String,
         instagramLink: String,
+
+        contacted: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
+
+        contactedBy: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "User",
+            },
+        ],
     },
     {
         // this second object adds extra properties: `createdAt` and `updatedAt`

@@ -25,6 +25,8 @@ router.get("/users", (req, res, next) => {
 
 router.get("/user/:id", (req, res, next) => {
     User.findById(req.params.id)
+        .populate("contacted")
+        .populate("contactedBy")
         .then(userFromDb => res.status(200).json(userFromDb))
         .catch(err => next(err))
 })
@@ -103,24 +105,35 @@ let transporter = nodemailer.createTransport({
     },
 })
 
-router.post("/contact", (req, res, next) => {
-    const { sender, receiver, date, message } = req.body
-    console.log(req.body)
+router.put("/contact", (req, res, next) => {
+    const { sender, receiver, date, message, id, artistId } = req.body
+    console.log(id)
+    console.log(artistId)
 
-    let mailDetails = {
-        from: process.env.EMAIL,
-        to: receiver,
-        subject: "New enquiry on Book a Band",
-        text: `Hi, you have a new enquiry from ${sender} for the ${date}. This is the message: ${message}`,
-    }
+    // User.findByIdAndUpdate(id, { $push: { contacted: artistId } })
+    User.findOneAndUpdate({ _id: id }, { $push: { contacted: artistId } }).then(
+        () => {
+            User.findOneAndUpdate(
+                { _id: artistId },
+                { $push: { contactedBy: id } }
+            ).then(() => {
+                let mailDetails = {
+                    from: process.env.EMAIL,
+                    to: receiver,
+                    subject: "New enquiry on Book a Band",
+                    text: `Hi, you have a new enquiry from ${sender} for the ${date}. This is the message: ${message}`,
+                }
 
-    transporter.sendMail(mailDetails, function (err, data) {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("Email sent successfully")
+                transporter.sendMail(mailDetails, function (err, data) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log("Email sent successfully")
+                    }
+                })
+            })
         }
-    })
+    )
 })
 
 module.exports = router
