@@ -37,7 +37,7 @@ function Signup(props) {
         e.preventDefault()
         const requestBody = { email, password, fullName, city, role: "user" }
         axios
-            .post(`${API_URL}/auth/signup`, requestBody)
+            .post(`/auth/signup`, requestBody)
             .then(res => navigate("/login"))
             .catch(err => {
                 const errorDescription = err.response.data.message

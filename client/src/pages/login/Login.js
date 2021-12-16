@@ -30,7 +30,7 @@ function Login(props) {
         const requestBody = { email, password }
 
         axios
-            .post(`${API_URL}/auth/login`, requestBody)
+            .post(`/auth/login`, requestBody)
             .then(res => {
                 const token = res.data.authToken
                 logInUser(token)

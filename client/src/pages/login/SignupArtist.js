@@ -54,7 +54,7 @@ function SignupArtist() {
             instagramLink: "",
         }
         axios
-            .post(`${API_URL}/auth/signup-artist`, requestBody)
+            .post(`/auth/signup-artist`, requestBody)
             .then(res => navigate("/login"))
             .catch(err => {
                 const errorDescription = err.response.data.message
