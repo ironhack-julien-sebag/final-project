@@ -57,24 +57,29 @@ function AccountUser() {
 
                     <TextIcon title="Location" value={user.city} />
 
-                    <Font.H2>Artists you contacted</Font.H2>
-
-                    {loading ? (
-                        <Font.P>Loading</Font.P>
-                    ) : conditionContacted ? (
-                        <List>
-                            {contacted.map(artist => (
-                                <CardSmall
-                                    to={`/artists/${artist._id}`}
-                                    name={artist.fullName}
-                                    img={artist.imageUrl}
-                                />
-                            ))}
-                        </List>
-                    ) : conditionNotContacted ? (
-                        <Font.P>You did not contact any artist yet!</Font.P>
-                    ) : (
-                        ""
+                    {userInfo.role === "user" && (
+                        <>
+                            <Font.H2>Artists you contacted</Font.H2>
+                            {loading ? (
+                                <Font.P>Loading</Font.P>
+                            ) : conditionContacted ? (
+                                <List>
+                                    {contacted.map(artist => (
+                                        <CardSmall
+                                            to={`/artists/${artist._id}`}
+                                            name={artist.fullName}
+                                            img={artist.imageUrl}
+                                        />
+                                    ))}
+                                </List>
+                            ) : conditionNotContacted ? (
+                                <Font.P>
+                                    You did not contact any artist yet!
+                                </Font.P>
+                            ) : (
+                                ""
+                            )}
+                        </>
                     )}
                 </Content>
             </Container>
